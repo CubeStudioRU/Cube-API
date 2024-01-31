@@ -21,4 +21,11 @@
 ## Полезные ссылки
 * Телеграм-канал CubeStudio: https://t.me/+Gphg_BIJEdMwMmFi
 
+## Переменные среды
+```API_KEY = ...``` - секретный ключ для будующих интеграций
+
+## Деплой (В разработке)
+* ```git clone ...```
+* ```poetry run sh start.sh```
+
 ###### Not an official Minecraft product. We are in no way affiliated with or endorsed by Mojang Synergies AB, Microsoft Corporation or other rightsholders.
