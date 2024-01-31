@@ -26,6 +26,7 @@
 
 ## Деплой (В разработке)
 * ```git clone ...```
+* ```poetry update```
 * ```poetry run sh start.sh```
 
 ###### Not an official Minecraft product. We are in no way affiliated with or endorsed by Mojang Synergies AB, Microsoft Corporation or other rightsholders.
