@@ -15,7 +15,8 @@
 * [ ] 0.1: Добавить ...
 
 ## Зависимости
-* ```...```, version >= ...
+* ```FastAPI```
+* ```uvicorn```
 
 ## Полезные ссылки
 * Телеграм-канал CubeStudio: https://t.me/+Gphg_BIJEdMwMmFi
