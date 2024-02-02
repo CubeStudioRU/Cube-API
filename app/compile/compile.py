@@ -2,7 +2,9 @@ import os
 from app.configuration.config import COMPILED_INSTANCE_FILE, INSTANCE_FILE
 from app.objects import CompiledInstance, Instance
 
-from app.compile.utils import get_json
+from app.compile.modrinth import get_mod_files_from_modrinth
+
+from app.compile.utils import get_json, save_json
 
 
 def is_compiled_instance_up_to_date() -> bool | None:
@@ -23,5 +25,25 @@ def is_compiled_instance_up_to_date() -> bool | None:
     
     return True
 
-def compile_instance():
-    ...
+def compile_instance() -> bool:
+    if not os.path.isfile(INSTANCE_FILE):
+        return False
+
+    instance = Instance(**get_json(INSTANCE_FILE))
+
+    compiled_instance_mods = {}
+
+    for mod in instance.modrinth:
+        mods = get_mod_files_from_modrinth(mod=mod.mod, version=mod.version)
+        compiled_instance_mods |= mods
+    
+    compiled_instance = CompiledInstance(
+        id=instance.id,
+        name=instance.name,
+        version=instance.version,
+        changelog=instance.changelog,
+        mods=compiled_instance_mods
+        )
+    
+    save_json(compiled_instance.dict(), COMPILED_INSTANCE_FILE)
+    return True
