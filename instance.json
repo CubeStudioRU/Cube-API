@@ -11,8 +11,8 @@
       "version": "fabric-1.20.4-2.5.1" 
     },
     {
-      "mod": "indium",
-      "version": "1.0.28+mc1.20.4"
+      "mod": "sodium",
+      "version": "mc1.20.4-0.5.8"
     },
     {
       "mod": "iris",

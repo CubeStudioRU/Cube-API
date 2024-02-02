@@ -1,0 +1,10 @@
+{
+	"id": 0,
+  "name": "CubeShield Experiment: Create",
+  "version": "0.0.1",
+  "changelog": "",
+  "mods": { 
+    "voicechat-fabric-1.20.4-2.5.1.jar": "https://cdn.modrinth.com/data/9eGKb6K1/versions/lobOF2Co/voicechat-fabric-1.20.4-2.5.1.jar",
+    "indium-1.0.28+mc1.20.4.jar": "https://cdn.modrinth.com/data/Orvt0mRa/versions/tD2IqHXC/indium-1.0.28%2Bmc1.20.4.jar"
+  }
+}

@@ -17,6 +17,7 @@
 ## Зависимости
 * ```FastAPI```
 * ```uvicorn```
+* ```Pydantic```
 
 ## Полезные ссылки
 * Телеграм-канал CubeStudio: https://t.me/+Gphg_BIJEdMwMmFi
