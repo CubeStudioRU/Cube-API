@@ -3,6 +3,7 @@ from app.configuration.config import COMPILED_INSTANCE_FILE, INSTANCE_FILE
 from app.objects import CompiledInstance, Instance
 
 from app.compile.modrinth import get_mod_files_from_modrinth
+from app.compile.curseforge import get_mod_files_from_curseforge
 
 from app.compile.utils import get_json, save_json
 
@@ -36,6 +37,11 @@ def compile_instance() -> bool:
     for mod in instance.modrinth:
         mods = get_mod_files_from_modrinth(mod=mod.mod, version=mod.version)
         compiled_instance_mods |= mods
+
+    for mod in instance.curseforge:
+        mods = get_mod_files_from_curseforge(mod_id=mod.mod_id, file_id=mod.file_id)
+        compiled_instance_mods |= mods
+    
     
     compiled_instance = CompiledInstance(
         id=instance.id,
