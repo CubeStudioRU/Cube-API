@@ -9,8 +9,10 @@ def get_mod_files_from_modrinth(mod: str, version: str) -> Dict | None:
     response = request(method='GET', url=url)
     data = response.json()
     files = data['files']
+    print(files)
     mods_url = {}
     for file in files:
-        mods_url[file['filename']] = file['url']
+        if file['primary'] == True:
+            mods_url[file['filename']] = file['url']
     
     return mods_url
