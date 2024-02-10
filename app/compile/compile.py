@@ -1,9 +1,13 @@
 import os
+from typing import List
+
+from app.objects import CompiledInstanceMod
+
 from app.configuration.config import COMPILED_INSTANCE_FILE, INSTANCE_FILE
 from app.objects import CompiledInstance, Instance
 
-from app.compile.modrinth import get_mod_files_from_modrinth
-from app.compile.curseforge import get_mod_files_from_curseforge
+from app.compile.modrinth import get_mod_file_from_modrinth
+from app.compile.curseforge import get_mod_file_from_curseforge
 
 from app.compile.utils import get_json, save_json
 
@@ -32,15 +36,15 @@ def compile_instance() -> bool:
 
     instance = Instance(**get_json(INSTANCE_FILE))
 
-    compiled_instance_mods = {}
+    compiled_instance_mods: List[CompiledInstanceMod] = []
 
     for mod in instance.modrinth:
-        mods = get_mod_files_from_modrinth(mod=mod.mod, version=mod.version)
-        compiled_instance_mods |= mods
+        instance_mod = get_mod_file_from_modrinth(mod=mod.mod, version=mod.version)
+        compiled_instance_mods.append(instance_mod)
 
     for mod in instance.curseforge:
-        mods = get_mod_files_from_curseforge(mod_id=mod.mod_id, file_id=mod.file_id)
-        compiled_instance_mods |= mods
+        instance_mod = get_mod_file_from_curseforge(mod_id=mod.mod_id, file_id=mod.file_id)
+        compiled_instance_mods.append(instance_mod)
     
     
     compiled_instance = CompiledInstance(

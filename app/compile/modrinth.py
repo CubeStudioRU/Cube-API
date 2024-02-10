@@ -1,17 +1,15 @@
 from app.configuration.config import BASE_MODRINTH_URL
-
-from typing import Dict
+from app.objects import CompiledInstanceMod
 
 from requests import request
 
-def get_mod_files_from_modrinth(mod: str, version: str) -> Dict | None:
+def get_mod_file_from_modrinth(mod: str, version: str) -> CompiledInstanceMod:
     url = BASE_MODRINTH_URL + f'/project/{mod}/version/{version}'
     response = request(method='GET', url=url)
     data = response.json()
     files = data['files']
-    mods_url = {}
     for file in files:
         if file['primary'] == True:
-            mods_url[file['filename']] = file['url']
+            return CompiledInstanceMod(file=file['filename'], url=file['url'])
     
-    return mods_url
+    return None
