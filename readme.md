@@ -77,9 +77,9 @@
 * ```poetry run uvicorn app:create_app --port 8000```
 
 ## Деплой (Production)
-* ```git clone https://github.com/fadegor05/Cube-API.git```
-* ```mkdir /etc/cubeapi/instance```
-* ```cp ./instance_template.json /etc/cubeapi/instance/```
-* ```docker-compose build --no-cache```
-* ```docker-compose up```
+* ```git clone https://github.com/fadegor05/Cube-API.git ~/cube-api```, клонирование репозитория Cube-API
+* ```mkdir ~/cube-api-config ~/cube-api-config/instance```, создание директорий для хранения конфигов, сборок, Docker volume
+* ```cp ~/cube-api/instance_template.json ~/cube-api-config/instance/instance.json```, копирование конфига в директорию с конфигами для Docker
+* ```nano ~/cube-api-config/instance/instance.json```, изменение файла конфигурации текущей сборки
+* ```docker-compose up --build --detach```, запуск контейнера
 ###### Not an official Minecraft product. We are in no way affiliated with or endorsed by Mojang Synergies AB, Microsoft Corporation or other rightsholders.

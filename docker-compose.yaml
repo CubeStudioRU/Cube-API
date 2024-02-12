@@ -7,4 +7,4 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - /etc/cubeapi/instance/:/cubeapi/instance/
+      - ~/cube-api-config/instance/:/cube-api/instance/

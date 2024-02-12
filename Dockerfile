@@ -4,7 +4,7 @@ EXPOSE 8000
 
 RUN pip install --no-cache-dir poetry
 
-WORKDIR /cubeapi
+WORKDIR /cube-api
 
 COPY pyproject.toml ./
 
