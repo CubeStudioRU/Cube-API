@@ -8,13 +8,10 @@
     Rest API, которое используется в сервисах CubeStudio.
 </p>
 
-## Последний релиз: 0.1
-* Первый запуск Cube-API 🎉
-* Запуск /api/v1/get_compiled_instance
-
 ## Дорожная карта Cube-API
 * [X] Первый запуск Cube-API
 * [X] Добавить поддержку CurseForge
+* [X] Создание Dockerfile, docker-compose, контейнеризация Cube-API
 * [ ] Создать Cube-CLI
 * [ ] Додавить поддержку своих модов
 * [ ] Добавить поддержку множества Instances одновременно
@@ -72,14 +69,51 @@
 ```API_KEY = ...``` - секретный ключ для будующих интеграций
 
 ## Деплой (Development)
-* ```git clone https://github.com/fadegor05/Cube-API.git```
-* ```poetry update```
-* ```poetry run uvicorn app:create_app --port 8000```
+```
+git clone https://github.com/fadegor05/Cube-API.git
+```
+Клонирование репозитория Cube-API
+```
+poetry update
+```
+Подтягивание зависимостей Poetry
+```
+poetry run uvicorn app:create_app --port 8000
+```
+Запуск Cube-API в режиме разработки
 
 ## Деплой (Production)
-* ```git clone https://github.com/fadegor05/Cube-API.git ~/cube-api```, клонирование репозитория Cube-API
-* ```mkdir ~/cube-api-config ~/cube-api-config/instance```, создание директорий для хранения конфигов, сборок, Docker volume
-* ```cp ~/cube-api/instance_template.json ~/cube-api-config/instance/instance.json```, копирование конфига в директорию с конфигами для Docker
-* ```nano ~/cube-api-config/instance/instance.json```, изменение файла конфигурации текущей сборки
-* ```docker-compose up --build --detach```, запуск контейнера
+Клонирование репозитория Cube-API
+```
+git clone https://github.com/fadegor05/Cube-API.git ~/cube-api
+```
+Перемещение в директорию репозитория
+```
+cd ~/cube-api
+```
+Создание директорий для хранения конфигов, сборок, Docker volume
+```
+mkdir ~/cube-api-config ~/cube-api-config/instance
+```
+Копирование конфига в директорию с конфигами для Docker
+```
+cp ~/cube-api/instance_template.json ~/cube-api-config/instance/instance.json
+```
+Изменение файла конфигурации текущей сборки
+```
+nano ~/cube-api-config/instance/instance.json
+```
+Настройка окружения для API ключей
+```
+nano ~/cube-api/.env
+```
+Сборка, запуск контейнера в фоновом режиме
+```
+docker-compose up --build --detach
+```
+Остановка контейнера
+```
+docker container stop cube-api
+```
+
 ###### Not an official Minecraft product. We are in no way affiliated with or endorsed by Mojang Synergies AB, Microsoft Corporation or other rightsholders.
