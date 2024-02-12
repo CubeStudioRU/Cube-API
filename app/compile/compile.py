@@ -11,7 +11,6 @@ from app.compile.curseforge import get_mod_file_from_curseforge
 
 from app.compile.utils import get_json, save_json
 
-
 def is_compiled_instance_up_to_date() -> bool | None:
     if not os.path.isfile(COMPILED_INSTANCE_FILE) or not os.path.isfile(INSTANCE_FILE):
         return False

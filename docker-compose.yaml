@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  cube_api:
+    build: .
+    container_name: cube-api
+    ports:
+      - 8000:8000
+    volumes:
+      - /etc/cubeapi/instance/:/cubeapi/instance/

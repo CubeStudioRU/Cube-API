@@ -72,17 +72,14 @@
 ```API_KEY = ...``` - секретный ключ для будующих интеграций
 
 ## Деплой (Development)
-* ```git clone ...```
+* ```git clone https://github.com/fadegor05/Cube-API.git```
 * ```poetry update```
-* ```poetry run sh start.sh```
-
-или
-
-* ```git clone ...```
-* ```poetry update```
-* ```poetry shell```
-* ```uvicorn app:create_app --port 8000```
+* ```poetry run uvicorn app:create_app --port 8000```
 
 ## Деплой (Production)
-* TODO
+* ```git clone https://github.com/fadegor05/Cube-API.git```
+* ```mkdir /etc/cubeapi/instance```
+* ```cp ./instance_template.json /etc/cubeapi/instance/```
+* ```docker-compose build --no-cache```
+* ```docker-compose up```
 ###### Not an official Minecraft product. We are in no way affiliated with or endorsed by Mojang Synergies AB, Microsoft Corporation or other rightsholders.
