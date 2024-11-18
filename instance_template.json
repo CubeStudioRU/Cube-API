@@ -1,5 +1,5 @@
 {
-	"id": 0,
+  "id": 0,
   "name": "CubeShield: Test",
   "version": "0.0.1",
   "changelog": "Changelog placeholder",
@@ -8,7 +8,7 @@
   "modrinth": [
     {
       "mod": "sodium",
-      "version": "mc1.20.4-0.5.8" 
+      "version": "mc1.20.4-0.5.8"
     }
   ],
   "curseforge": [
