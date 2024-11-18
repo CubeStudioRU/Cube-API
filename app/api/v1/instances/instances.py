@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.compile import is_compiled_instance_up_to_date, get_compiled_instance, compile_instance
-from app.objects import CompiledInstance
+from app.schemas import CompiledInstance
 
 instances_router = APIRouter(
     prefix='/instances',

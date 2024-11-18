@@ -2,7 +2,7 @@ from requests import request
 
 from app.core.config import BASE_CURSEFORGE_URL
 from app.core.config import CURSEFORGE_API_KEY
-from app.objects import CompiledInstanceMod
+from app.schemas import CompiledInstanceMod
 
 
 async def get_mod_file_from_curseforge(mod_id: int, file_id: int) -> CompiledInstanceMod:

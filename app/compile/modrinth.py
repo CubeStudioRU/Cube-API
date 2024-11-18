@@ -1,7 +1,7 @@
 from requests import request
 
 from app.core.config import BASE_MODRINTH_URL
-from app.objects import CompiledInstanceMod
+from app.schemas import CompiledInstanceMod
 
 
 async def get_mod_file_from_modrinth(mod: str, version: str) -> CompiledInstanceMod:

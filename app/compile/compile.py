@@ -5,8 +5,8 @@ from app.compile.curseforge import get_mod_file_from_curseforge
 from app.compile.modrinth import get_mod_file_from_modrinth
 from app.compile.utils import get_json, save_json
 from app.core.config import COMPILED_INSTANCE_FILE, INSTANCE_FILE
-from app.objects import CompiledInstance, Instance
-from app.objects import CompiledInstanceMod
+from app.schemas import CompiledInstance, Instance
+from app.schemas import CompiledInstanceMod
 
 
 async def is_compiled_instance_up_to_date() -> bool | None:
