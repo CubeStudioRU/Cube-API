@@ -1,39 +1,44 @@
 from typing import List
 
-from app.core.config import COMPILED_INSTANCE_FILE
 from app.core.utils import hash_dict
-from app.crud.files import get_json, save_json
 from app.integrations.base_integration import BaseIntegration
 from app.integrations.curseforge_integration import curseforge_integration
 from app.integrations.modrinth_integration import modrinth_integration
 from app.schemas.instance_schema import CompiledInstance, Instance
-from app.schemas.mod_schema import BaseMod
-from app.services.instance_service import InstanceService
+from app.services.cache_service import compile_cache_service_factory, CompileCacheService
+from app.services.instance_service import InstanceService, instance_service_factory
 
 
 class CompileService:
-    @staticmethod
-    async def get_compiled_instance() -> CompiledInstance:
-        instance: Instance = await InstanceService.get_instance()
+    def __init__(self,
+                 compile_instance_service: InstanceService,
+                 cache_service: CompileCacheService,
+                 integrations: List[BaseIntegration]):
+        self.instance_service = compile_instance_service
+        self.cache_service = cache_service
+        self.integrations = integrations
 
-        if await CompiledCacheService.is_cache_vaild(instance):
-            return await CompiledCacheService.get_cached_instance()
+    async def get_compiled_instance(self) -> CompiledInstance:
+        instance: Instance = await self.instance_service.get_instance()
 
-        compiled_instance = await CompileService.compile_instance(instance)
-        await CompiledCacheService.update_cached_instance(compiled_instance)
+        cached_instance = await self.cache_service.get_valid_cached_instance(instance)
+        if cached_instance:
+            return cached_instance
+
+        compiled_instance = await self.compile_instance(instance)
+        await self.cache_service.update_cached_instance(compiled_instance)
 
         return compiled_instance
 
-    @staticmethod
-    async def compile_mods(integration: BaseIntegration, data: List[BaseMod]):
-        return [await integration.get_mod(mod) for mod in data]
-
-    @staticmethod
-    async def compile_instance(instance: Instance) -> CompiledInstance:
+    async def compile_instance(self, instance: Instance) -> CompiledInstance:
         compiled_instance_mods = []
 
-        compiled_instance_mods += await CompileService.compile_mods(modrinth_integration, instance.modrinth)
-        compiled_instance_mods += await CompileService.compile_mods(curseforge_integration, instance.curseforge)
+        for integration in self.integrations:
+            try:
+                mods = await integration.extract_mods(instance)
+                compiled_instance_mods += await integration.get_mods(mods)
+            except Exception as e:
+                print(f"Error in integration {integration.__repr__()}: {e}")
 
         compiled_instance = CompiledInstance(
             id=instance.id,
@@ -43,27 +48,23 @@ class CompileService:
             instance_hash=hash_dict(instance.model_dump()),
             mods=compiled_instance_mods
         )
-
         return compiled_instance
 
 
-class CompiledCacheService:
-    @staticmethod
-    async def is_cache_vaild(instance: Instance) -> bool:
-        cached_instance = await CompiledCacheService.get_cached_instance()
-        if cached_instance is None:
-            return False
-        if hash_dict(instance.model_dump()) == cached_instance.instance_hash:
-            return True
-        return False
+async def compile_service_factory() -> CompileService:
+    instance_service = await instance_service_factory()
+    compile_cache_service = await compile_cache_service_factory()
+    integrations: List[BaseIntegration] = [
+        curseforge_integration,
+        modrinth_integration,
+    ]
 
-    @staticmethod
-    async def get_cached_instance() -> CompiledInstance | None:
-        data = get_json(COMPILED_INSTANCE_FILE)
-        if data is None:
-            return None
-        return CompiledInstance.model_validate(data)
+    return CompileService(
+        instance_service,
+        compile_cache_service,
+        integrations
+    )
 
-    @staticmethod
-    async def update_cached_instance(instance: CompiledInstance):
-        save_json(instance.model_dump(), COMPILED_INSTANCE_FILE)
+
+async def get_compile_service() -> CompileService:
+    return await compile_service_factory()
