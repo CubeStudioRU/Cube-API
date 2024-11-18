@@ -1,8 +1,11 @@
+from typing import List
+
 import aiohttp
 
 from app.core.config import BASE_CURSEFORGE_URL, CURSEFORGE_API_KEY
 from app.integrations.base_integration import BaseIntegration
-from app.schemas.mod_schema import CompiledInstanceMod, CurseforgeMod
+from app.schemas.instance_schema import Instance
+from app.schemas.mod_schema import CompiledInstanceMod, CurseforgeMod, BaseMod
 
 
 class CurseforgeIntegration(BaseIntegration):
@@ -21,6 +24,9 @@ class CurseforgeIntegration(BaseIntegration):
                 if not data:
                     raise Exception(f"{self.__repr__()} is empty")
                 return CompiledInstanceMod(file=data.get("fileName"), url=data.get("downloadUrl"))
+
+    async def extract_mods(self, instance: Instance) -> List[BaseMod]:
+        return instance.curseforge
 
 
 curseforge_integration = CurseforgeIntegration()
