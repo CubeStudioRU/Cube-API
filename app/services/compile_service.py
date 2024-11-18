@@ -4,6 +4,7 @@ from app.core.config import COMPILED_INSTANCE_FILE
 from app.core.utils import hash_dict
 from app.crud.files import get_json, save_json
 from app.integrations.base_integration import BaseIntegration
+from app.integrations.curseforge_integration import curseforge_integration
 from app.integrations.modrinth_integration import modrinth_integration
 from app.schemas.instance_schema import CompiledInstance, Instance
 from app.services.instance_service import InstanceService
@@ -31,6 +32,7 @@ class CompileService:
         compiled_instance_mods = []
 
         compiled_instance_mods += await CompileService.compile_mods(modrinth_integration, instance.modrinth)
+        compiled_instance_mods += await CompileService.compile_mods(curseforge_integration, instance.curseforge)
 
         compiled_instance = CompiledInstance(
             id=instance.id,
