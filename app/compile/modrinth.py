@@ -1,7 +1,8 @@
-from app.configuration.config import BASE_MODRINTH_URL
+from requests import request
+
+from app.core.config import BASE_MODRINTH_URL
 from app.objects import CompiledInstanceMod
 
-from requests import request
 
 def get_mod_file_from_modrinth(mod: str, version: str) -> CompiledInstanceMod:
     url = BASE_MODRINTH_URL + f'/project/{mod}/version/{version}'
@@ -11,5 +12,5 @@ def get_mod_file_from_modrinth(mod: str, version: str) -> CompiledInstanceMod:
     for file in files:
         if file['primary'] == True:
             return CompiledInstanceMod(file=file['filename'], url=file['url'])
-    
+
     return None
