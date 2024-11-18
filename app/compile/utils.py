@@ -14,7 +14,7 @@ def save_json(obj: dict, path: str) -> None:
         return json.dump(obj, file)
 
 
-def get_compiled_instance() -> dict | None:
+async def get_compiled_instance() -> dict | None:
     if not os.path.isfile(COMPILED_INSTANCE_FILE):
         return None
 

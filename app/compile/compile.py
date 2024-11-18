@@ -9,7 +9,7 @@ from app.objects import CompiledInstance, Instance
 from app.objects import CompiledInstanceMod
 
 
-def is_compiled_instance_up_to_date() -> bool | None:
+async def is_compiled_instance_up_to_date() -> bool | None:
     if not os.path.isfile(COMPILED_INSTANCE_FILE) or not os.path.isfile(INSTANCE_FILE):
         return False
 
@@ -28,7 +28,7 @@ def is_compiled_instance_up_to_date() -> bool | None:
     return True
 
 
-def compile_instance() -> bool:
+async def compile_instance() -> bool:
     if not os.path.isfile(INSTANCE_FILE):
         return False
 
@@ -37,11 +37,11 @@ def compile_instance() -> bool:
     compiled_instance_mods: List[CompiledInstanceMod] = []
 
     for mod in instance.modrinth:
-        instance_mod = get_mod_file_from_modrinth(mod=mod.mod, version=mod.version)
+        instance_mod = await get_mod_file_from_modrinth(mod=mod.mod, version=mod.version)
         compiled_instance_mods.append(instance_mod)
 
     for mod in instance.curseforge:
-        instance_mod = get_mod_file_from_curseforge(mod_id=mod.mod_id, file_id=mod.file_id)
+        instance_mod = await get_mod_file_from_curseforge(mod_id=mod.mod_id, file_id=mod.file_id)
         compiled_instance_mods.append(instance_mod)
 
     compiled_instance = CompiledInstance(

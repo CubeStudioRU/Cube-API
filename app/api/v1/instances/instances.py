@@ -11,13 +11,13 @@ instances_router = APIRouter(
 
 @instances_router.get('/')
 async def get_instance() -> CompiledInstance:
-    is_instance_compiled: bool = is_compiled_instance_up_to_date()
-    if is_instance_compiled == None:
+    is_instance_compiled: bool = await is_compiled_instance_up_to_date()
+    if is_instance_compiled is None:
         return None
 
     if not is_instance_compiled:
-        response = compile_instance()
+        response = await compile_instance()
         if not response:
             return None
 
-    return get_compiled_instance()
+    return await get_compiled_instance()
