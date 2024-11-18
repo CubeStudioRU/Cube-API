@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import List
 
 from app.core.config import COMPILED_INSTANCE_FILE
 from app.core.utils import hash_dict
@@ -7,6 +7,7 @@ from app.integrations.base_integration import BaseIntegration
 from app.integrations.curseforge_integration import curseforge_integration
 from app.integrations.modrinth_integration import modrinth_integration
 from app.schemas.instance_schema import CompiledInstance, Instance
+from app.schemas.mod_schema import BaseMod
 from app.services.instance_service import InstanceService
 
 
@@ -24,7 +25,7 @@ class CompileService:
         return compiled_instance
 
     @staticmethod
-    async def compile_mods(integration: BaseIntegration, data: Iterable):
+    async def compile_mods(integration: BaseIntegration, data: List[BaseMod]):
         return [await integration.get_mod(mod) for mod in data]
 
     @staticmethod
