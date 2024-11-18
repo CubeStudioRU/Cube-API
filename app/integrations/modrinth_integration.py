@@ -1,8 +1,11 @@
+from typing import List
+
 import aiohttp
 
 from app.core.config import BASE_MODRINTH_URL
 from app.integrations.base_integration import BaseIntegration
-from app.schemas.mod_schema import ModrinthMod, CompiledInstanceMod
+from app.schemas.instance_schema import Instance
+from app.schemas.mod_schema import ModrinthMod, CompiledInstanceMod, BaseMod
 
 
 class ModrinthIntegration(BaseIntegration):
@@ -20,6 +23,9 @@ class ModrinthIntegration(BaseIntegration):
                     if file["primary"]:
                         return CompiledInstanceMod(file=file.get("filename"), url=file.get("url"))
         return None
+
+    async def extract_mods(self, instance: Instance) -> List[BaseMod]:
+        return instance.modrinth
 
 
 modrinth_integration = ModrinthIntegration()
