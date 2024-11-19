@@ -1,8 +1,14 @@
 import pytest
 
+from app.integrations.curseforge_integration import CurseforgeIntegration
 from app.integrations.modrinth_integration import ModrinthIntegration
 from app.schemas.instance_schema import Instance
 from app.schemas.mod_schema import ModrinthMod, CurseforgeMod
+
+
+@pytest.fixture
+def curseforge_integration():
+    return CurseforgeIntegration()
 
 
 @pytest.fixture
