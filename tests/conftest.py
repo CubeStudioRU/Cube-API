@@ -1,13 +1,33 @@
 import pytest
 
+from app.integrations.curseforge_integration import CurseforgeIntegration
 from app.integrations.modrinth_integration import ModrinthIntegration
-from app.schemas.instance_schema import Instance
-from app.schemas.mod_schema import ModrinthMod, CurseforgeMod
+from app.schemas.instance_schema import Instance, CompiledInstance
+from app.schemas.mod_schema import ModrinthMod, CurseforgeMod, CompiledInstanceMod
+
+
+@pytest.fixture
+def curseforge_integration():
+    return CurseforgeIntegration()
 
 
 @pytest.fixture
 def modrinth_integration():
     return ModrinthIntegration()
+
+
+@pytest.fixture
+def compiled_instance_fixture():
+    return CompiledInstance(
+        id=0,
+        name="CubeShield: Test",
+        version="0.0.2",
+        changelog="Changelog placeholder",
+        instance_hash="c7b53327babb4b3ce5b52fdddd86421c",
+        mods=[
+            CompiledInstanceMod(file="modfile.jar", url="http://example.com/modfile.jar"),
+        ]
+    )
 
 
 @pytest.fixture

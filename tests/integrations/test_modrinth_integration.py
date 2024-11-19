@@ -61,3 +61,24 @@ async def test_extract_mods(modrinth_integration, instance_fixture):
     result = await modrinth_integration.extract_mods(instance)
 
     assert result == instance.modrinth
+
+
+@pytest.mark.asyncio
+@pytest.mark.integration
+async def test_integration_get_mod_success(modrinth_integration):
+    mod = ModrinthMod(mod="sodium", version="mc1.20.4-0.5.8")
+    compiled_mod = CompiledInstanceMod(file="sodium-fabric-0.5.8+mc1.20.4.jar",
+                                       url="https://cdn.modrinth.com/data/AANobbMI/versions/4GyXKCLd/sodium-fabric-0.5.8%2Bmc1.20.4.jar")
+
+    result = await modrinth_integration.get_mod(mod)
+
+    assert compiled_mod == result
+
+
+@pytest.mark.asyncio
+@pytest.mark.integration
+async def test_integration_get_mod_error(modrinth_integration):
+    mod = ModrinthMod(mod="ohio-wtf-only", version="mc1.20.4-0.5.8-this-thing-is-not-exists")
+
+    with pytest.raises(Exception, match="is not reachable"):
+        await modrinth_integration.get_mod(mod)

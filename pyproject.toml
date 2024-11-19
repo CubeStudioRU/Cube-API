@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = "^0.109.0"
-uvicorn = {extras = ["standart"], version = "^0.27.0.post1"}
+uvicorn = { extras = ["standart"], version = "^0.27.0.post1" }
 python-dotenv = "^1.0.1"
 pydantic = "^2.6.0"
 requests = "^2.31.0"
@@ -21,3 +21,11 @@ aioresponses = "^0.7.7"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "integration",
+    "slow",
+]
+addopts = "-v --tb=long"
