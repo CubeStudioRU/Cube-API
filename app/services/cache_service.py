@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from app.core.config import COMPILED_INSTANCE_FILE
+from app.core.config import COMPILED_CLIENT_INSTANCE_FILE
 from app.core.utils import hash_dict
 from app.crud.files import get_json, save_json
 from app.schemas.instance_schema import CompiledInstance, Instance
@@ -50,5 +50,5 @@ class CompileCacheService:
 
 async def compile_cache_service_factory(cache_service: CacheService = None) -> CompileCacheService:
     if cache_service is None:
-        cache_service = FileCacheService(COMPILED_INSTANCE_FILE)
+        cache_service = FileCacheService(COMPILED_CLIENT_INSTANCE_FILE)
     return CompileCacheService(cache_service)
