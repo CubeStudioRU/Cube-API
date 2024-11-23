@@ -16,7 +16,6 @@ class BaseMod(BaseModel):
 class CompiledInstanceMod(BaseMod):
     file: str
     url: str
-    side: ModSide
 
 
 class ModrinthMod(BaseMod):
