@@ -21,7 +21,7 @@ class ModrinthIntegration(BaseIntegration):
                 data = await response.json()
                 for file in data.get("files", []):
                     if file["primary"]:
-                        return CompiledInstanceMod(file=file.get("filename"), url=file.get("url"))
+                        return CompiledInstanceMod(file=file.get("filename"), url=file.get("url"), side=mod.side)
         return None
 
     async def extract_mods(self, instance: Instance) -> List[BaseMod]:

@@ -23,7 +23,7 @@ class CurseforgeIntegration(BaseIntegration):
                 data = (await response.json()).get("data")
                 if not data:
                     raise Exception(f"{self.__repr__()} is empty")
-                return CompiledInstanceMod(file=data.get("fileName"), url=data.get("downloadUrl"))
+                return CompiledInstanceMod(file=data.get("fileName"), url=data.get("downloadUrl"), side=data.side)
 
     async def extract_mods(self, instance: Instance) -> List[BaseMod]:
         return instance.curseforge
