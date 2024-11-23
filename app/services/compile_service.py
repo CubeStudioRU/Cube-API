@@ -21,12 +21,12 @@ class CompileService:
     async def get_compiled_instance(self, instance_type: InstanceType) -> CompiledInstance:
         instance: Instance = await self.instance_service.get_instance()
 
-        # cached_instance = await self.cache_service.get_valid_cached_instance(instance)
-        # if cached_instance:
-        #    return cached_instance
+        cached_instance = await self.cache_service.get_valid_cached_instance(instance, instance_type)
+        if cached_instance:
+            return cached_instance
 
         compiled_instance = await self.compile_instance(instance, instance_type)
-        await self.cache_service.update_cached_instance(compiled_instance)
+        await self.cache_service.update_cached_instance(compiled_instance, instance_type)
 
         return compiled_instance
 
