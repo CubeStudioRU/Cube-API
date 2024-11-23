@@ -5,7 +5,7 @@ from app.integrations.base_integration import BaseIntegration
 from app.integrations.curseforge_integration import curseforge_integration
 from app.integrations.modrinth_integration import modrinth_integration
 from app.schemas.instance_schema import CompiledInstance, Instance, InstanceType
-from app.services.cache_service import compile_cache_service_factory, CompileCacheService
+from app.services.compile_cache_service import compile_cache_service_factory, CompileCacheService
 from app.services.instance_service import InstanceService, instance_service_factory
 
 
