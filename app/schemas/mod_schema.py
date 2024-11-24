@@ -2,6 +2,8 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+from app.schemas.cache_schema import Cached
+
 
 class ModSide(str, Enum):
     server = "server"
@@ -29,5 +31,5 @@ class CompiledMod(BaseModel):
     url: str
 
 
-class CachedMod(CompiledMod):
-    hash: str
+class CachedMod(CompiledMod, Cached):
+    pass

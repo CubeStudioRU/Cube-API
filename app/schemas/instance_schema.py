@@ -3,6 +3,7 @@ from typing import List
 
 from pydantic import BaseModel
 
+from app.schemas.cache_schema import Cached
 from app.schemas.mod_schema import ModrinthMod, CurseforgeMod, CompiledMod
 
 
@@ -30,5 +31,5 @@ class CompiledInstance(BaseInstance):
     mods: List[CompiledMod]
 
 
-class CachedInstance(CompiledInstance):
-    hash: str
+class CachedInstance(CompiledInstance, Cached):
+    pass
