@@ -1,10 +1,30 @@
-version: '3.7'
-
 services:
   cube_api:
     build: .
     container_name: cube-api
+    env_file:
+      - .env
     ports:
-      - 8000:8000
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    depends_on:
+      - mongo
     volumes:
       - ~/cube-api-config/instance/:/cube-api/instance/
+
+  mongo:
+    command: mongod --quiet --logpath /dev/null
+    restart: always
+    image: mongo:latest
+    container_name: cube-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS}
+    env_file:
+      - .env
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:
