@@ -1,8 +1,7 @@
 from abc import ABC
 
-from app.repositories.base_repository import BaseRepository
-from app.schemas.instance_schema import CachedInstance
+from app.repositories.cache_repository import CacheRepository
 
 
-class InstanceCacheRepository(BaseRepository[CachedInstance], ABC):
+class InstanceCacheRepository(CacheRepository, ABC):
     pass

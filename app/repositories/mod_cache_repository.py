@@ -1,8 +1,7 @@
 from abc import ABC
 
-from app.repositories.base_repository import BaseRepository
-from app.schemas.mod_schema import CachedMod
+from app.repositories.cache_repository import CacheRepository
 
 
-class ModCacheRepository(BaseRepository[CachedMod], ABC):
+class ModCacheRepository(CacheRepository, ABC):
     pass
