@@ -4,8 +4,8 @@ from app.core.utils import hash_dict
 from app.integrations.base_integration import BaseIntegration
 from app.integrations.curseforge_integration import curseforge_integration
 from app.integrations.modrinth_integration import modrinth_integration
-from app.schemas.instance_schema import CompiledInstance, Instance
-from app.services.cache_service import compile_cache_service_factory, CompileCacheService
+from app.schemas.instance_schema import CompiledInstance, Instance, InstanceType
+from app.services.compile_cache_service import compile_cache_service_factory, CompileCacheService
 from app.services.instance_service import InstanceService, instance_service_factory
 
 
@@ -18,25 +18,25 @@ class CompileService:
         self.cache_service = cache_service
         self.integrations = integrations
 
-    async def get_compiled_instance(self) -> CompiledInstance:
+    async def get_compiled_instance(self, instance_type: InstanceType) -> CompiledInstance:
         instance: Instance = await self.instance_service.get_instance()
 
-        cached_instance = await self.cache_service.get_valid_cached_instance(instance)
+        cached_instance = await self.cache_service.get_valid_cached_instance(instance, instance_type)
         if cached_instance:
             return cached_instance
 
-        compiled_instance = await self.compile_instance(instance)
-        await self.cache_service.update_cached_instance(compiled_instance)
+        compiled_instance = await self.compile_instance(instance, instance_type)
+        await self.cache_service.update_cached_instance(compiled_instance, instance_type)
 
         return compiled_instance
 
-    async def compile_instance(self, instance: Instance) -> CompiledInstance:
+    async def compile_instance(self, instance: Instance, instance_type: InstanceType) -> CompiledInstance:
         compiled_instance_mods = []
 
         for integration in self.integrations:
             try:
                 mods = await integration.extract_mods(instance)
-                compiled_instance_mods += await integration.get_mods(mods)
+                compiled_instance_mods += await integration.get_mods(mods, instance_type)
             except Exception as e:
                 print(f"Error in integration {integration.__repr__()}: {e}")
 

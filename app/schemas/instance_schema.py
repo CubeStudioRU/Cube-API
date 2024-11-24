@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List
 
 from pydantic import BaseModel
@@ -22,3 +23,8 @@ class Instance(BaseInstance):
 class CompiledInstance(BaseInstance):
     instance_hash: str
     mods: List[CompiledInstanceMod]
+
+
+class InstanceType(str, Enum):
+    server = "server"
+    client = "client"
