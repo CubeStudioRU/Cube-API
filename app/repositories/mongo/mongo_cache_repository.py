@@ -2,13 +2,13 @@ from typing import Optional
 
 from typing_extensions import TypeVar
 
-from app.repositories.instance_cache_repository import InstanceCacheRepository
+from app.repositories.cache_repository import CacheRepository
 from app.repositories.mongo.mongo_base_repository import MongoBaseRepository
 
 T = TypeVar("T")
 
 
-class MongoCacheRepository(InstanceCacheRepository, MongoBaseRepository):
+class MongoCacheRepository(CacheRepository, MongoBaseRepository):
     def __init__(self):
         super().__init__()
 
