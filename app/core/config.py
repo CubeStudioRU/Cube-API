@@ -26,7 +26,7 @@ class MongoSettings(BaseSettings):
 
     @property
     def mongodb_url(self) -> str:
-        return f"mongodb://{self.mongo_root_user}:{self.mongo_root_pass}@mongo:{self.mongo_port}"
+        return f"mongodb://{self.mongo_root_user}:{self.mongo_root_pass}@mongo:27017"
 
     class Config:
         extra = "allow"
