@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from app.schemas.mod_schema import CompiledInstanceMod, ModrinthMod, CurseforgeMod
+from app.schemas.mod_schema import ModrinthMod, CurseforgeMod, CompiledMod
 
 
 class BaseInstance(BaseModel):
@@ -22,7 +22,7 @@ class Instance(BaseInstance):
 
 class CompiledInstance(BaseInstance):
     instance_hash: str
-    mods: List[CompiledInstanceMod]
+    mods: List[CompiledMod]
 
 
 class InstanceType(str, Enum):

@@ -2,17 +2,17 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from app.schemas.instance_schema import Instance, InstanceType
-from app.schemas.mod_schema import BaseMod, CompiledInstanceMod, ModSide
+from app.schemas.mod_schema import ModSide, IntegrationMod, CompiledMod
 
 
 class BaseIntegration(ABC):
     BASE_URL: str
 
     @abstractmethod
-    async def get_mod(self, mod: BaseMod) -> CompiledInstanceMod:
+    async def get_mod(self, mod: IntegrationMod) -> CompiledMod:
         pass
 
-    async def get_mods(self, mods: List[BaseMod], instance_type: InstanceType) -> List[CompiledInstanceMod]:
+    async def get_mods(self, mods: List[IntegrationMod], instance_type: InstanceType) -> List[CompiledMod]:
         supported_mods = [ModSide.both]
         if instance_type == InstanceType.client:
             supported_mods.append(ModSide.client)
@@ -28,5 +28,5 @@ class BaseIntegration(ABC):
         return compiled_mods
 
     @abstractmethod
-    async def extract_mods(self, instance: Instance) -> List[BaseMod]:
+    async def extract_mods(self, instance: Instance) -> List[IntegrationMod]:
         pass

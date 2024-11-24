@@ -9,23 +9,25 @@ class ModSide(str, Enum):
     both = "both"
 
 
-class BaseMod(BaseModel):
-    pass
+class IntegrationMod(BaseModel):
+    side: ModSide
 
 
-class CompiledInstanceMod(BaseMod):
+class ModrinthMod(IntegrationMod):
+    mod: str
+    version: str
+
+
+class CurseforgeMod(IntegrationMod):
+    mod: str | None
+    mod_id: int
+    file_id: int
+
+
+class CompiledMod(BaseModel):
     file: str
     url: str
 
 
-class ModrinthMod(BaseMod):
-    mod: str
-    version: str
-    side: ModSide
-
-
-class CurseforgeMod(BaseMod):
-    mod: str | None
-    mod_id: int
-    file_id: int
-    side: ModSide
+class CachedMod(CompiledMod):
+    mod_hash: str
