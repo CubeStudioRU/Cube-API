@@ -1,14 +1,41 @@
-import os
+from pydantic.v1 import BaseSettings
 
-from dotenv import load_dotenv
 
-load_dotenv('.env')
+class Settings(BaseSettings):
+    ENV: str = "prod"
+    PROJECT_NAME: str = "Cube-API"
 
-API_KEY = os.getenv('API_KEY')
-CURSEFORGE_API_KEY = os.getenv('CURSEFORGE_API_KEY')
+    backend_port: str
 
-COMPILED_INSTANCE_VAULT = './instance/'
-INSTANCE_FILE = './instance/instance.json'
+    curseforge_api_key: str
 
-BASE_CURSEFORGE_URL = 'https://api.curseforge.com/v1'
-BASE_MODRINTH_URL = 'https://api.modrinth.com/v2'
+    mongo_root_user: str
+    mongo_root_pass: str
+    mongo_port: str
+
+    class Config:
+        env_file = ".env"
+        extra = "allow"
+        case_sensitive = False
+
+
+class MongoSettings(BaseSettings):
+    mongo_root_user: str
+    mongo_root_pass: str
+    mongo_port: str
+
+    @property
+    def mongodb_url(self) -> str:
+        return f"mongodb://{self.mongo_root_user}:{self.mongo_root_pass}@mongo:{self.mongo_port}"
+
+    class Config:
+        extra = "allow"
+        env_file = ".env"
+
+
+def get_mongo_settings():
+    return MongoSettings()
+
+
+def get_settings():
+    return Settings()

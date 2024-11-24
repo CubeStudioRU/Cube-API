@@ -1,13 +1,20 @@
 from enum import Enum
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
-from app.schemas.mod_schema import CompiledInstanceMod, ModrinthMod, CurseforgeMod
+from app.schemas.cache_schema import Cached
+from app.schemas.mod_schema import ModrinthMod, CurseforgeMod, CompiledMod
+
+
+class InstanceType(str, Enum):
+    server = "server"
+    client = "client"
 
 
 class BaseInstance(BaseModel):
-    id: int
+    model_config = ConfigDict(extra='ignore')
+    uuid: str
     name: str
     version: str
     changelog: str
@@ -21,10 +28,9 @@ class Instance(BaseInstance):
 
 
 class CompiledInstance(BaseInstance):
-    instance_hash: str
-    mods: List[CompiledInstanceMod]
+    instance_type: InstanceType
+    mods: List[CompiledMod]
 
 
-class InstanceType(str, Enum):
-    server = "server"
-    client = "client"
+class CachedInstance(CompiledInstance, Cached):
+    pass

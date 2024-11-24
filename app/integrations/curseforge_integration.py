@@ -1,19 +1,21 @@
 from typing import List
 
 import aiohttp
+from fastapi.params import Depends
 
-from app.core.config import BASE_CURSEFORGE_URL, CURSEFORGE_API_KEY
+from app.core.config import get_settings
 from app.integrations.base_integration import BaseIntegration
 from app.schemas.instance_schema import Instance
-from app.schemas.mod_schema import CompiledInstanceMod, CurseforgeMod, BaseMod
+from app.schemas.mod_schema import CurseforgeMod, CompiledMod, IntegrationMod
+from app.services.mod_cache_service import ModCacheService, get_mod_cache_service
 
 
 class CurseforgeIntegration(BaseIntegration):
-    BASE_URL = BASE_CURSEFORGE_URL
-    API_KEY = CURSEFORGE_API_KEY
+    BASE_URL = "https://api.curseforge.com/v1"
+    API_KEY = get_settings().curseforge_api_key
 
-    async def get_mod(self, data: CurseforgeMod) -> CompiledInstanceMod:
-        url = self.BASE_URL + f"/mods/{data.mod_id}/files/{data.file_id}"
+    async def get_mod(self, mod: CurseforgeMod) -> CompiledMod:
+        url = self.BASE_URL + f"/mods/{mod.mod_id}/files/{mod.file_id}"
         headers = {'Accept': 'application/json', 'x-api-key': self.API_KEY}
 
         async with aiohttp.ClientSession() as session:
@@ -23,10 +25,12 @@ class CurseforgeIntegration(BaseIntegration):
                 data = (await response.json()).get("data")
                 if not data:
                     raise Exception(f"{self.__repr__()} is empty")
-                return CompiledInstanceMod(file=data.get("fileName"), url=data.get("downloadUrl"))
+                return CompiledMod(file=data.get("fileName"), url=data.get("downloadUrl"))
 
-    async def extract_mods(self, instance: Instance) -> List[BaseMod]:
+    async def extract_mods(self, instance: Instance) -> List[IntegrationMod]:
         return instance.curseforge
 
 
-curseforge_integration = CurseforgeIntegration()
+async def get_curseforge_integration(
+        mod_cache_service: ModCacheService = Depends(get_mod_cache_service)) -> CurseforgeIntegration:
+    return CurseforgeIntegration(mod_cache_service)
