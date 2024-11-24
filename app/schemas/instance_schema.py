@@ -12,7 +12,7 @@ class InstanceType(str, Enum):
 
 
 class BaseInstance(BaseModel):
-    id: int
+    uuid: str
     name: str
     version: str
     changelog: str
