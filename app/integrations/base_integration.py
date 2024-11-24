@@ -32,9 +32,12 @@ class BaseIntegration(ABC):
                 if cached_mod:
                     compiled_mods.append(cached_mod)
                 else:
-                    mod = await self.get_mod(mod)
-                    await self.cache_service.add_cache(mod)
-                    compiled_mods.append(mod)
+                    compiled_mod = await self.get_mod(mod)
+                    if compiled_mod:
+                        await self.cache_mod(mod, compiled_mod)
+                        compiled_mods.append(compiled_mod)
+                    else:
+                        print(f"{mod.model_dump()} Failed")
 
         return compiled_mods
 
