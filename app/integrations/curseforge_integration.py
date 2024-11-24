@@ -2,14 +2,14 @@ from typing import List
 
 import aiohttp
 
-from app.core.config import BASE_CURSEFORGE_URL, CURSEFORGE_API_KEY
+from app.core.config import CURSEFORGE_API_KEY
 from app.integrations.base_integration import BaseIntegration
 from app.schemas.instance_schema import Instance
 from app.schemas.mod_schema import CompiledInstanceMod, CurseforgeMod, BaseMod
 
 
 class CurseforgeIntegration(BaseIntegration):
-    BASE_URL = BASE_CURSEFORGE_URL
+    BASE_URL = "https://api.curseforge.com/v1"
     API_KEY = CURSEFORGE_API_KEY
 
     async def get_mod(self, data: CurseforgeMod) -> CompiledInstanceMod:

@@ -2,14 +2,13 @@ from typing import List
 
 import aiohttp
 
-from app.core.config import BASE_MODRINTH_URL
 from app.integrations.base_integration import BaseIntegration
 from app.schemas.instance_schema import Instance
 from app.schemas.mod_schema import ModrinthMod, CompiledInstanceMod, BaseMod
 
 
 class ModrinthIntegration(BaseIntegration):
-    BASE_URL = BASE_MODRINTH_URL
+    BASE_URL = "https://api.modrinth.com/v2"
 
     async def get_mod(self, mod: ModrinthMod) -> CompiledInstanceMod:
         url = self.BASE_URL + f"/project/{mod.mod}/version/{mod.version}"
