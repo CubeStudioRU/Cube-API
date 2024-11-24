@@ -27,6 +27,13 @@ class AsyncMongoStorage:
             self._connection.close()
             self._connection = None
 
+    async def __aenter__(self) -> "AsyncMongoStorage":
+        await self.connect()
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb) -> None:
+        await self.disconnect()
+
     async def get_collection(self, collection_name: str) -> AsyncIOMotorCollection:
         if not self._connection:
             raise RuntimeError("MongoDB connection is not initialized.")

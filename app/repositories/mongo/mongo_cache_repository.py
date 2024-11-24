@@ -13,8 +13,10 @@ class MongoCacheRepository(InstanceCacheRepository, MongoBaseRepository):
         super().__init__()
 
     async def get(self, entity_hash: str) -> Optional[T]:
-        document = await self.storage.find_one(self.collection_name, {"hash": entity_hash})
+        async with self.storage:
+            document = await self.storage.find_one(self.collection_name, {"hash": entity_hash})
         return T.model_validate(**document) if document else None
 
     async def delete(self, entity: T) -> None:
-        await self.storage.delete_one(self.collection_name, {"hash": entity.hash})
+        async with self.storage:
+            await self.storage.delete_one(self.collection_name, {"hash": entity.hash})

@@ -13,15 +13,19 @@ class MongoBaseRepository(BaseRepository):
         self.storage = storage
 
     async def get_all(self) -> List[T]:
-        documents = await self.storage.find_all(self.collection_name)
+        async with self.storage:
+            documents = await self.storage.find_all(self.collection_name)
         return [T.model_validate(**doc) for doc in documents]
 
-    async def get(self, entity_id: str) -> Optional[T]:
-        document = await self.storage.find_one(self.collection_name, {"id": entity_id})
+    async def get(self, entity_uuid: str) -> Optional[T]:
+        async with self.storage:
+            document = await self.storage.find_one(self.collection_name, {"uuid": entity_uuid})
         return T.model_validate(**document) if document else None
 
     async def save(self, entity: T) -> None:
-        await self.storage.insert_one(self.collection_name, entity.model_dump())
+        async with self.storage:
+            await self.storage.insert_one(self.collection_name, entity.model_dump())
 
     async def delete(self, entity: T) -> None:
-        await self.storage.delete_one(self.collection_name, {"id": entity.id})
+        async with self.storage:
+            await self.storage.delete_one(self.collection_name, {"id": entity.id})
