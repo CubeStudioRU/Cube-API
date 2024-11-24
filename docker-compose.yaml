@@ -12,7 +12,7 @@ services:
       - ~/cube-api-config/instance/:/cube-api/instance/
 
   mongo:
-    command: mongod --quiet --logpath /dev/null
+    command: --quiet
     restart: always
     image: mongo:latest
     container_name: cube-mongodb
