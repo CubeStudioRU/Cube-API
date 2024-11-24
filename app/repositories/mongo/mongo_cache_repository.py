@@ -1,22 +1,14 @@
-from typing import Optional
-
-from typing_extensions import TypeVar
-
 from app.repositories.cache_repository import CacheRepository
 from app.repositories.mongo.mongo_base_repository import MongoBaseRepository
+from app.schemas.cache_schema import Cached
 
-T = TypeVar("T")
 
+class MongoCacheRepository(MongoBaseRepository, CacheRepository):
+    entity_model = Cached
 
-class MongoCacheRepository(CacheRepository, MongoBaseRepository):
-    def __init__(self):
-        super().__init__()
+    async def get(self, entity_hash: str) -> entity_model:
+        document = await self.storage.find_one(self.repository_name, {"hash": entity_hash})
+        return self.entity_model.model_validate(document) if document else None
 
-    async def get(self, entity_hash: str) -> Optional[T]:
-        async with self.storage:
-            document = await self.storage.find_one(self.collection_name, {"hash": entity_hash})
-        return T.model_validate(**document) if document else None
-
-    async def delete(self, entity: T) -> None:
-        async with self.storage:
-            await self.storage.delete_one(self.collection_name, {"hash": entity.hash})
+    async def delete(self, entity: Cached) -> None:
+        await self.storage.delete_one(self.repository_name, {"hash": entity.hash})

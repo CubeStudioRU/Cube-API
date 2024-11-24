@@ -1,21 +1,23 @@
+from typing import Generic
+
 from pydantic import BaseModel
 from typing_extensions import TypeVar
 
 from app.core.utils import hash_dict
 from app.repositories.cache_repository import CacheRepository
-from app.schemas.cache_schema import Cached
 
 Entity = TypeVar("Entity", bound=BaseModel)
-CachedEntity = TypeVar("CachedEntity", bound=Cached)
+CachedEntity = TypeVar("CachedEntity", bound=BaseModel)
 
 
-class CacheService(Entity, CachedEntity):
+class CacheService(Generic[Entity, CachedEntity]):
     def __init__(self, repository: CacheRepository):
         self.repository = repository
 
-    async def get_valid_cache(self, entity: Entity, entity_hash: str) -> CachedEntity | None:
+    async def get_valid_cache(self, entity: Entity) -> CachedEntity | None:
+        entity_hash = hash_dict(entity.model_dump())
         cached = await self.get_cache(entity_hash)
-        if cached and hash_dict(entity.model_dump()) == cached.hash:
+        if cached and entity_hash == cached.hash:
             return cached
         return None
 
@@ -27,5 +29,5 @@ class CacheService(Entity, CachedEntity):
         if cached:
             await self.repository.delete(cached)
 
-    async def update_cache(self, cached_entity: CachedEntity):
+    async def add_cache(self, cached_entity: CachedEntity):
         await self.repository.save(cached_entity)

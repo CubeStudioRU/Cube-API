@@ -4,4 +4,4 @@ from app.repositories.cache_repository import CacheRepository
 
 
 class InstanceCacheRepository(CacheRepository, ABC):
-    pass
+    repository_name = "cached_instances"

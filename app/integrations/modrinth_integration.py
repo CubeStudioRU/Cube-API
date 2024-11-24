@@ -1,10 +1,12 @@
 from typing import List
 
 import aiohttp
+from fastapi.params import Depends
 
 from app.integrations.base_integration import BaseIntegration
 from app.schemas.instance_schema import Instance
 from app.schemas.mod_schema import ModrinthMod, CompiledMod, IntegrationMod
+from app.services.mod_cache_service import ModCacheService, get_mod_cache_service
 
 
 class ModrinthIntegration(BaseIntegration):
@@ -27,4 +29,6 @@ class ModrinthIntegration(BaseIntegration):
         return instance.modrinth
 
 
-modrinth_integration = ModrinthIntegration()
+async def get_modrinth_integration(
+        mod_cache_service: ModCacheService = Depends(get_mod_cache_service)) -> ModrinthIntegration:
+    return ModrinthIntegration(mod_cache_service)

@@ -4,4 +4,4 @@ from app.repositories.cache_repository import CacheRepository
 
 
 class ModCacheRepository(CacheRepository, ABC):
-    pass
+    repository_name = "cached_mods"

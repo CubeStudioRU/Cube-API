@@ -1,4 +1,4 @@
-from enum import Enum
+from typing import AsyncGenerator
 from typing import Optional, Mapping, Any, List
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
@@ -6,33 +6,19 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from app.core.config import get_settings, get_mongo_settings
 
 
-class CollectionsEnum(str, Enum):
-    INSTANCES = "instances"
-    MODS_CACHE = "mods_cache"
-    INSTANCES_CACHE = "instances_cache"
-
-
 class AsyncMongoStorage:
     def __init__(self):
-        mongo_settings = get_mongo_settings()
-        self.mongo_uri = mongo_settings.MONGO_URI
+        self.mongo_url = get_mongo_settings().mongodb_url
         self.database_name = get_settings().PROJECT_NAME
         self._connection: Optional[AsyncIOMotorClient] = None
 
     async def connect(self) -> None:
-        self._connection = AsyncIOMotorClient(self.mongo_uri)
+        self._connection = AsyncIOMotorClient(self.mongo_url)
 
     async def disconnect(self) -> None:
         if self._connection:
             self._connection.close()
             self._connection = None
-
-    async def __aenter__(self) -> "AsyncMongoStorage":
-        await self.connect()
-        return self
-
-    async def __aexit__(self, exc_type, exc, tb) -> None:
-        await self.disconnect()
 
     async def get_collection(self, collection_name: str) -> AsyncIOMotorCollection:
         if not self._connection:
@@ -68,3 +54,12 @@ class AsyncMongoStorage:
     async def delete_many(self, collection_name: str, filter: dict) -> None:
         collection = await self.get_collection(collection_name)
         await collection.delete_many(filter)
+
+
+async def get_async_mongo_storage() -> AsyncGenerator[AsyncMongoStorage, None]:
+    storage = AsyncMongoStorage()
+    await storage.connect()
+    try:
+        yield storage
+    finally:
+        await storage.disconnect()

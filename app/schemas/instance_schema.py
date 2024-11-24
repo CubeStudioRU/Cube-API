@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.schemas.cache_schema import Cached
 from app.schemas.mod_schema import ModrinthMod, CurseforgeMod, CompiledMod
@@ -13,6 +13,7 @@ class InstanceType(str, Enum):
 
 
 class BaseInstance(BaseModel):
+    model_config = ConfigDict(extra='ignore')
     uuid: str
     name: str
     version: str

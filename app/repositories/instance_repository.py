@@ -5,4 +5,4 @@ from app.schemas.instance_schema import Instance
 
 
 class InstanceRepository(BaseRepository[Instance], ABC):
-    pass
+    repository_name = "instances"

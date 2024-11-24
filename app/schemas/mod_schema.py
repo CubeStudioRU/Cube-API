@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.schemas.cache_schema import Cached
 
@@ -11,7 +11,12 @@ class ModSide(str, Enum):
     both = "both"
 
 
-class IntegrationMod(BaseModel):
+class BaseMod(BaseModel):
+    model_config = ConfigDict(extra='ignore')
+    pass
+
+
+class IntegrationMod(BaseMod):
     side: ModSide
 
 
@@ -26,7 +31,7 @@ class CurseforgeMod(IntegrationMod):
     file_id: int
 
 
-class CompiledMod(BaseModel):
+class CompiledMod(BaseMod):
     file: str
     url: str
 

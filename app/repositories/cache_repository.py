@@ -5,4 +5,4 @@ from app.schemas.cache_schema import Cached
 
 
 class CacheRepository(BaseRepository[Cached], ABC):
-    pass
+    repository_name = "cached"

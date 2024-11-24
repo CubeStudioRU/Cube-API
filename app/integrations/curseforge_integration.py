@@ -1,11 +1,13 @@
 from typing import List
 
 import aiohttp
+from fastapi.params import Depends
 
 from app.core.config import get_settings
 from app.integrations.base_integration import BaseIntegration
 from app.schemas.instance_schema import Instance
 from app.schemas.mod_schema import CurseforgeMod, CompiledMod, IntegrationMod
+from app.services.mod_cache_service import ModCacheService, get_mod_cache_service
 
 
 class CurseforgeIntegration(BaseIntegration):
@@ -29,4 +31,6 @@ class CurseforgeIntegration(BaseIntegration):
         return instance.curseforge
 
 
-curseforge_integration = CurseforgeIntegration()
+async def get_curseforge_integration(
+        mod_cache_service: ModCacheService = Depends(get_mod_cache_service)) -> CurseforgeIntegration:
+    return CurseforgeIntegration(mod_cache_service)

@@ -1,12 +1,17 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from app.core.utils import hash_dict
 from app.schemas.instance_schema import Instance, InstanceType
-from app.schemas.mod_schema import ModSide, IntegrationMod, CompiledMod
+from app.schemas.mod_schema import ModSide, IntegrationMod, CompiledMod, CachedMod
+from app.services.mod_cache_service import ModCacheService
 
 
 class BaseIntegration(ABC):
     BASE_URL: str
+
+    def __init__(self, cache_service: ModCacheService):
+        self.cache_service = cache_service
 
     @abstractmethod
     async def get_mod(self, mod: IntegrationMod) -> CompiledMod:
@@ -23,9 +28,19 @@ class BaseIntegration(ABC):
 
         for mod in mods:
             if mod.side in supported_mods:
-                compiled_mods.append(await self.get_mod(mod))
+                cached_mod = await self.cache_service.get_valid_cache(mod)
+                if cached_mod:
+                    compiled_mods.append(cached_mod)
+                else:
+                    mod = await self.get_mod(mod)
+                    await self.cache_service.add_cache(mod)
+                    compiled_mods.append(mod)
 
         return compiled_mods
+
+    async def cache_mod(self, integration_mod: IntegrationMod, compiled_mod: CompiledMod):
+        cached_mod = CachedMod(**compiled_mod.model_dump(), hash=hash_dict(integration_mod.model_dump()))
+        await self.cache_service.add_cache(cached_mod)
 
     @abstractmethod
     async def extract_mods(self, instance: Instance) -> List[IntegrationMod]:

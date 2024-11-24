@@ -5,6 +5,8 @@ T = TypeVar('T')
 
 
 class BaseRepository(ABC, Generic[T]):
+    repository_name: str
+
     @abstractmethod
     async def get_all(self) -> List[T]:
         pass
