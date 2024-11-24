@@ -12,8 +12,8 @@ class CurseforgeIntegration(BaseIntegration):
     BASE_URL = "https://api.curseforge.com/v1"
     API_KEY = get_settings().curseforge_api_key
 
-    async def get_mod(self, data: CurseforgeMod) -> CompiledMod:
-        url = self.BASE_URL + f"/mods/{data.mod_id}/files/{data.file_id}"
+    async def get_mod(self, mod: CurseforgeMod) -> CompiledMod:
+        url = self.BASE_URL + f"/mods/{mod.mod_id}/files/{mod.file_id}"
         headers = {'Accept': 'application/json', 'x-api-key': self.API_KEY}
 
         async with aiohttp.ClientSession() as session:
