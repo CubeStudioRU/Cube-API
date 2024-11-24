@@ -30,4 +30,4 @@ class CompiledMod(BaseModel):
 
 
 class CachedMod(CompiledMod):
-    mod_hash: str
+    hash: str

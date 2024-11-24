@@ -6,6 +6,11 @@ from pydantic import BaseModel
 from app.schemas.mod_schema import ModrinthMod, CurseforgeMod, CompiledMod
 
 
+class InstanceType(str, Enum):
+    server = "server"
+    client = "client"
+
+
 class BaseInstance(BaseModel):
     id: int
     name: str
@@ -21,10 +26,9 @@ class Instance(BaseInstance):
 
 
 class CompiledInstance(BaseInstance):
-    instance_hash: str
+    instance_type: InstanceType
     mods: List[CompiledMod]
 
 
-class InstanceType(str, Enum):
-    server = "server"
-    client = "client"
+class CachedInstance(CompiledInstance):
+    hash: str
