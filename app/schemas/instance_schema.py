@@ -4,12 +4,13 @@ from typing import List
 from pydantic import BaseModel, ConfigDict
 
 from app.schemas.cache_schema import Cached
-from app.schemas.mod_schema import ModrinthMod, CurseforgeMod, CompiledMod
+from app.schemas.mod_schema import CompiledMod
 
 
 class InstanceType(str, Enum):
     server = "server"
     client = "client"
+    both = "both"
 
 
 class BaseInstance(BaseModel):
@@ -23,8 +24,6 @@ class BaseInstance(BaseModel):
 class Instance(BaseInstance):
     game_version: str
     loader: str
-    modrinth: List[ModrinthMod]
-    curseforge: List[CurseforgeMod]
 
 
 class CompiledInstance(BaseInstance):
