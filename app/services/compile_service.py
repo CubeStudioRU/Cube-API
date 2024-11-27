@@ -19,7 +19,8 @@ class CompileService:
     async def get_compiled_instance(self, instance_type: InstanceType) -> CompiledInstance:
         instance: Instance = await self.instance_service.get_instance()
 
-        cached_instance = await self.cache_service.get_valid_instance_cache(instance, instance_type)
+        instance_hash = await self.get_instance_hash(instance)
+        cached_instance = await self.cache_service.get_valid_instance_cache(instance_hash, instance_type)
         if cached_instance:
             return cached_instance
 
@@ -28,8 +29,14 @@ class CompileService:
 
         return compiled_instance
 
+    async def get_instance_hash(self, instance: Instance) -> str:
+        instance_hash = hash_dict(instance.model_dump())
+        mods_hash = await self.mod_service.get_mods_hash()
+        return instance_hash + mods_hash
+
     async def cache_instance(self, instance: Instance, compiled_instance: CompiledInstance) -> None:
-        cached_instance = CachedInstance(**compiled_instance.model_dump(), hash=hash_dict(instance.model_dump()))
+        hash = await self.get_instance_hash(instance)
+        cached_instance = CachedInstance(**compiled_instance.model_dump(), hash=hash)
         await self.cache_service.add_cache(cached_instance)
 
     async def compile_instance(self, instance: Instance, instance_type: InstanceType) -> CompiledInstance:

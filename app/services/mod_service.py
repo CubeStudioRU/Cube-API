@@ -3,6 +3,7 @@ from typing import List
 
 from fastapi.params import Depends
 
+from app.core.utils import hash_dict
 from app.integrations.base_integration import BaseIntegration
 from app.integrations.curseforge_integration import get_curseforge_integration, CurseforgeIntegration
 from app.integrations.modrinth_integration import get_modrinth_integration, ModrinthIntegration
@@ -26,6 +27,10 @@ class ModService:
             compiled_mods.extend(await integration.get_mods(mods))
 
         return compiled_mods
+
+    async def get_mods_hash(self) -> str:
+        mods = await self.repository.get_all()
+        return hash_dict({"mods": mods})
 
 
 IntegrationList = Sequence[BaseIntegration]
