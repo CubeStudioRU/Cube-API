@@ -5,10 +5,26 @@ from pydantic import BaseModel, ConfigDict
 from app.schemas.cache_schema import Cached
 
 
+class IntegrationType(str, Enum):
+    modrinth = "modrinth"
+    curseforge = "curseforge"
+
+
 class ModSide(str, Enum):
     server = "server"
     client = "client"
     both = "both"
+
+    @classmethod
+    def from_instance_type(cls, instance_type) -> list["ModSide"]:
+        sides = [cls.both]
+        if instance_type.client:
+            sides.append(cls.client)
+        if instance_type.server:
+            sides.append(cls.server)
+        if instance_type.both:
+            sides.extend((cls.server, cls.client))
+        return sides
 
 
 class BaseMod(BaseModel):
@@ -17,18 +33,10 @@ class BaseMod(BaseModel):
 
 
 class IntegrationMod(BaseMod):
-    side: ModSide
-
-
-class ModrinthMod(IntegrationMod):
     mod: str
     version: str
-
-
-class CurseforgeMod(IntegrationMod):
-    mod: str | None
-    mod_id: int
-    file_id: int
+    side: ModSide
+    integration: IntegrationType
 
 
 class CompiledMod(BaseMod):
