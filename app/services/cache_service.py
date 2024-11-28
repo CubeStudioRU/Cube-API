@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import Generic
 
 from pydantic import BaseModel
@@ -10,7 +11,7 @@ Entity = TypeVar("Entity", bound=BaseModel)
 CachedEntity = TypeVar("CachedEntity", bound=BaseModel)
 
 
-class CacheService(Generic[Entity, CachedEntity]):
+class CacheService(Generic[Entity, CachedEntity], ABC):
     def __init__(self, repository: CacheRepository):
         self.repository = repository
 
