@@ -9,8 +9,8 @@ from app.integrations.curseforge_integration import get_curseforge_integration, 
 from app.integrations.modrinth_integration import get_modrinth_integration, ModrinthIntegration
 from app.repositories.mod_content_repository import ModContentRepository
 from app.repositories.mongo.mongo_mod_content_repository import MongoModContentRepository
+from app.schemas.content_schema import CompiledContent, ContentSide
 from app.schemas.instance_schema import InstanceType
-from app.schemas.mod_schema import ModSide, CompiledMod
 
 
 class ModService:
@@ -18,13 +18,13 @@ class ModService:
         self.repository = repository
         self.integrations = integrations
 
-    async def get_compiled_mods(self, instance_type: InstanceType) -> List[CompiledMod]:
-        mod_sides = ModSide.from_instance_type(instance_type)
-        compiled_mods: List[CompiledMod] = []
+    async def get_compiled_mods(self, instance_type: InstanceType) -> List[CompiledContent]:
+        mod_sides = ContentSide.from_instance_type(instance_type)
+        compiled_mods: List[CompiledContent] = []
 
         for integration in self.integrations:
-            mods = await self.repository.get_by_integration_and_sides(integration.integration_type, mod_sides)
-            compiled_mods.extend(await integration.get_mods(mods))
+            mods = await self.repository.get_typed_by_integration_and_sides(integration.integration_type, mod_sides)
+            compiled_mods.extend(await integration.get_contents(mods))
 
         return compiled_mods
 
