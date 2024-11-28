@@ -3,7 +3,7 @@ import pytest
 from app.integrations.curseforge_integration import CurseforgeIntegration
 from app.integrations.modrinth_integration import ModrinthIntegration
 from app.schemas.instance_schema import Instance, CompiledInstance
-from app.schemas.mod_schema import ModrinthMod, CurseforgeMod, CompiledInstanceMod
+from app.schemas.integration_schema import ModrinthMod, CurseforgeMod, CompiledInstanceMod
 
 
 @pytest.fixture

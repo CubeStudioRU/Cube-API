@@ -1,7 +1,7 @@
 from fastapi.params import Depends
 
-from app.repositories.instance_cache_repository import InstanceCacheRepository
-from app.repositories.mongo.mongo_instance_cache_repository import MongoInstanceCacheRepository
+from app.repositories.instance.instance_cache_repository import InstanceCacheRepository
+from app.repositories.repositories_mongo.instance.mongo_instance_cache_repository import MongoInstanceCacheRepository
 from app.schemas.instance_schema import Instance, CachedInstance, InstanceType
 from app.services.cache_service import CacheService
 

@@ -1,7 +1,7 @@
 from fastapi.params import Depends
 
-from app.repositories.instance_repository import InstanceRepository
-from app.repositories.mongo.mongo_instance_repository import MongoInstanceRepository
+from app.repositories.instance.instance_repository import InstanceRepository
+from app.repositories.repositories_mongo.instance.mongo_instance_repository import MongoInstanceRepository
 from app.schemas.instance_schema import Instance
 
 

@@ -1,16 +1,22 @@
+from typing import List
+
 import aiohttp
 from fastapi.params import Depends
 
 from app.integrations.base_integration import BaseIntegration
-from app.schemas.mod_schema import CompiledMod, IntegrationMod, IntegrationType
-from app.services.mod_cache_service import ModCacheService, get_mod_cache_service
+from app.schemas.content_schema import TypedContent, CompiledContent
+from app.schemas.integration_schema import IntegrationType
+from app.services.cache_service import CacheService
+from app.services.mod.mod_content_cache_service import get_mod_cache_service, ModContentCacheService
+from app.services.resourcepack.resourcepack_content_cache_service import ResourcepackContentCacheService, \
+    get_resourcepack_content_cache_service
 
 
 class ModrinthIntegration(BaseIntegration):
     BASE_URL = "https://api.modrinth.com/v2"
 
-    async def get_mod(self, mod: IntegrationMod) -> CompiledMod:
-        url = self.BASE_URL + f"/project/{mod.mod}/version/{mod.version}"
+    async def get_content(self, content: TypedContent) -> CompiledContent:
+        url = self.BASE_URL + f"/project/{content.project}/version/{content.version}"
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
@@ -19,10 +25,15 @@ class ModrinthIntegration(BaseIntegration):
                 data = await response.json()
                 for file in data.get("files", []):
                     if file["primary"]:
-                        return CompiledMod(file=file.get("filename"), url=file.get("url"))
-        return None
+                        return CompiledContent(file=file.get("filename"), url=file.get("url"))
 
 
 async def get_modrinth_integration(
-        mod_cache_service: ModCacheService = Depends(get_mod_cache_service)) -> ModrinthIntegration:
-    return ModrinthIntegration(mod_cache_service, IntegrationType.modrinth)
+        mod_content_cache_service: ModContentCacheService = Depends(get_mod_cache_service),
+        resourcepack_content_cache_service: ResourcepackContentCacheService = Depends(
+            get_resourcepack_content_cache_service)) -> ModrinthIntegration:
+    cache_services: List[CacheService] = [
+        mod_content_cache_service,
+        resourcepack_content_cache_service,
+    ]
+    return ModrinthIntegration(cache_services, IntegrationType.modrinth)

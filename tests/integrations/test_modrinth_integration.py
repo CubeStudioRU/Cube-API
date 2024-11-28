@@ -1,7 +1,7 @@
 import pytest
 from aioresponses import aioresponses
 
-from app.schemas.mod_schema import ModrinthMod, CompiledInstanceMod
+from app.schemas.integration_schema import ModrinthMod, CompiledInstanceMod
 
 
 @pytest.mark.asyncio
