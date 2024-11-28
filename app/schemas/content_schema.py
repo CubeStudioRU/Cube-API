@@ -33,8 +33,6 @@ class Content(BaseModel):
 
 
 class BaseContent(Content):
-    project: str
-    version: str
     side: ContentSide
     integration: IntegrationType
 
@@ -50,3 +48,8 @@ class CompiledContent(Content):
 
 class CachedContent(CompiledContent, Cached):
     pass
+
+
+class IntegrationContent(BaseContent):
+    project: str
+    version: str

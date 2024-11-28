@@ -1,7 +1,7 @@
-from app.schemas.content_schema import BaseContent, CompiledContent, CachedContent, TypedContent
+from app.schemas.content_schema import CompiledContent, CachedContent, TypedContent, IntegrationContent
 
 
-class ModContent(BaseContent):
+class ModContent(IntegrationContent):
     pass
 
 
