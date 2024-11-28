@@ -1,7 +1,7 @@
 from app.repositories.mod_content_cache_repository import ModContentCacheRepository
 from app.repositories.mongo.mongo_content_cache_repository import MongoContentCacheRepository
-from app.schemas.mod_schema import CachedMod
+from app.schemas.mod_content_schema import ModCachedContent
 
 
 class MongoModContentCacheRepository(MongoContentCacheRepository, ModContentCacheRepository):
-    entity_model = CachedMod
+    entity_model = ModCachedContent
