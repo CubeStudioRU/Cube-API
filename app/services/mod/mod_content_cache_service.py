@@ -1,7 +1,7 @@
 from fastapi import Depends
 
-from app.repositories.mod_content_cache_repository import ModContentCacheRepository
-from app.repositories.mongo.mongo_mod_content_cache_repository import MongoModContentCacheRepository
+from app.repositories.mod.mod_content_cache_repository import ModContentCacheRepository
+from app.repositories.repositories_mongo.mod.mongo_mod_content_cache_repository import MongoModContentCacheRepository
 from app.schemas.mod_content_schema import ModContent, ModCachedContent
 from app.services.cache_service import CacheService
 

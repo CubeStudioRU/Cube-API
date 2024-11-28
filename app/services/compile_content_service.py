@@ -5,8 +5,9 @@ from fastapi.params import Depends
 from app.schemas.content_schema import CompiledContentContainer
 from app.schemas.instance_schema import InstanceType
 from app.services.content_service import ContentService
-from app.services.mod_content_service import ModContentService, get_mod_content_service
-from app.services.resourcepack_content_service import ResourcepackContentService, get_resourcepack_content_service
+from app.services.mod.mod_content_service import ModContentService, get_mod_content_service
+from app.services.resourcepack.resourcepack_content_service import ResourcepackContentService, \
+    get_resourcepack_content_service
 
 
 class CompileContentService:

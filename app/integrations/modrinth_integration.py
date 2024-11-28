@@ -7,8 +7,8 @@ from app.integrations.base_integration import BaseIntegration
 from app.schemas.content_schema import TypedContent, CompiledContent
 from app.schemas.integration_schema import IntegrationType
 from app.services.cache_service import CacheService
-from app.services.mod_content_cache_service import get_mod_cache_service, ModContentCacheService
-from app.services.resourcepack_content_cache_service import ResourcepackContentCacheService, \
+from app.services.mod.mod_content_cache_service import get_mod_cache_service, ModContentCacheService
+from app.services.resourcepack.resourcepack_content_cache_service import ResourcepackContentCacheService, \
     get_resourcepack_content_cache_service
 
 

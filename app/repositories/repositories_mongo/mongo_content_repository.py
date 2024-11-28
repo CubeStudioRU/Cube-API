@@ -3,7 +3,7 @@ from typing import List, Optional
 from typing_extensions import TypeVar
 
 from app.repositories.content_repository import ContentRepository
-from app.repositories.mongo.mongo_base_repository import MongoBaseRepository
+from app.repositories.repositories_mongo.mongo_base_repository import MongoBaseRepository
 from app.schemas.content_schema import ContentSide, TypedContent
 from app.schemas.integration_schema import IntegrationType
 

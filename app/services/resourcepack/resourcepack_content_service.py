@@ -2,8 +2,9 @@ from fastapi.params import Depends
 
 from app.integrations.curseforge_integration import get_curseforge_integration, CurseforgeIntegration
 from app.integrations.modrinth_integration import get_modrinth_integration, ModrinthIntegration
-from app.repositories.mongo.mongo_resourcepack_content_repository import MongoResourcepackContentRepository
-from app.repositories.resourcepack_content_repository import ResourcepackContentRepository
+from app.repositories.repositories_mongo.resourcepack.mongo_resourcepack_content_repository import \
+    MongoResourcepackContentRepository
+from app.repositories.resourcepack.resourcepack_content_repository import ResourcepackContentRepository
 from app.services.content_service import ContentService
 
 
