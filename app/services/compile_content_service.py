@@ -6,6 +6,7 @@ from app.schemas.content_schema import CompiledContentContainer
 from app.schemas.instance_schema import InstanceType
 from app.services.content_service import ContentService
 from app.services.mod_content_service import ModContentService, get_mod_content_service
+from app.services.resourcepack_content_service import ResourcepackContentService, get_resourcepack_content_service
 
 
 class CompileContentService:
@@ -30,8 +31,11 @@ class CompileContentService:
 
 
 async def get_compile_content_service(
-        mod_content_service: ModContentService = Depends(get_mod_content_service)) -> CompileContentService:
+        mod_content_service: ModContentService = Depends(get_mod_content_service),
+        resourcepack_content_service: ResourcepackContentService = Depends(
+            get_resourcepack_content_service)) -> CompileContentService:
     content_services: List[ContentService] = [
         mod_content_service,
+        resourcepack_content_service,
     ]
     return CompileContentService(content_services)

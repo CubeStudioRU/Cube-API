@@ -5,14 +5,16 @@ from app.core.utils import hash_dict
 from app.schemas.content_schema import CompiledContent, TypedContent, ContentType, CachedContent
 from app.schemas.integration_schema import IntegrationType
 from app.services.cache_service import CacheService
-from app.services.mod_cache_service import ModCacheService
+from app.services.mod_content_cache_service import ModContentCacheService
+from app.services.resourcepack_content_cache_service import ResourcepackContentCacheService
 
 
 class BaseIntegration(ABC):
     BASE_URL: str
     integration_type: IntegrationType
     service_map = {
-        ContentType.mods.name: ModCacheService,
+        ContentType.mods.name: ModContentCacheService,
+        ContentType.resourcepacks.name: ResourcepackContentCacheService
     }
 
     def __init__(self, cache_services: List[CacheService], integration_type: IntegrationType):

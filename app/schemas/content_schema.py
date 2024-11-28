@@ -9,7 +9,7 @@ from app.schemas.integration_schema import IntegrationType
 
 class ContentType(str, Enum):
     mods = "mods"
-    configs = "configs"
+    resourcepacks = "resourcepacks"
 
 
 class ContentSide(str, Enum):

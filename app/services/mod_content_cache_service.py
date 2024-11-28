@@ -6,10 +6,10 @@ from app.schemas.mod_content_schema import ModContent, ModCachedContent
 from app.services.cache_service import CacheService
 
 
-class ModCacheService(CacheService[ModContent, ModCachedContent]):
+class ModContentCacheService(CacheService[ModContent, ModCachedContent]):
     pass
 
 
-async def get_mod_cache_service(mod_cache_repository: ModContentCacheRepository = Depends(
-    MongoModContentCacheRepository)) -> ModCacheService:
-    return ModCacheService(mod_cache_repository)
+async def get_mod_cache_service(cache_repository: ModContentCacheRepository = Depends(
+    MongoModContentCacheRepository)) -> ModContentCacheService:
+    return ModContentCacheService(cache_repository)
