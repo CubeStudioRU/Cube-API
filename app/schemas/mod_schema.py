@@ -1,8 +1,9 @@
 from enum import Enum
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import ConfigDict
 
 from app.schemas.cache_schema import Cached
+from app.schemas.content_schema import BaseContent
 
 
 class IntegrationType(str, Enum):
@@ -27,7 +28,7 @@ class ModSide(str, Enum):
         return sides
 
 
-class BaseMod(BaseModel):
+class BaseMod(BaseContent):
     model_config = ConfigDict(extra='ignore')
     pass
 

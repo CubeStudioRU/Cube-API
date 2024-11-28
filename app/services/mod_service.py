@@ -7,14 +7,14 @@ from app.core.utils import hash_dict
 from app.integrations.base_integration import BaseIntegration
 from app.integrations.curseforge_integration import get_curseforge_integration, CurseforgeIntegration
 from app.integrations.modrinth_integration import get_modrinth_integration, ModrinthIntegration
-from app.repositories.mod_repository import ModRepository
-from app.repositories.mongo.mongo_mod_repository import MongoModRepository
+from app.repositories.mod_content_repository import ModContentRepository
+from app.repositories.mongo.mongo_mod_content_repository import MongoModContentRepository
 from app.schemas.instance_schema import InstanceType
 from app.schemas.mod_schema import ModSide, CompiledMod
 
 
 class ModService:
-    def __init__(self, repository: ModRepository, integrations: List[BaseIntegration]):
+    def __init__(self, repository: ModContentRepository, integrations: List[BaseIntegration]):
         self.repository = repository
         self.integrations = integrations
 
@@ -36,7 +36,7 @@ class ModService:
 IntegrationList = Sequence[BaseIntegration]
 
 
-async def get_mod_service(repository: ModRepository = Depends(MongoModRepository),
+async def get_mod_service(repository: ModContentRepository = Depends(MongoModContentRepository),
                           modrinth_integration: ModrinthIntegration = Depends(get_modrinth_integration),
                           curseforge_integration: CurseforgeIntegration = Depends(
                               get_curseforge_integration)) -> ModService:
