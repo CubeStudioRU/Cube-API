@@ -1,7 +1,7 @@
 import pytest
 from aioresponses import aioresponses
 
-from app.schemas.mod_schema import CurseforgeMod, CompiledInstanceMod
+from app.schemas.integration_schema import CurseforgeMod, CompiledInstanceMod
 from tests.conftest import curseforge_integration
 
 
