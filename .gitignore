@@ -160,6 +160,5 @@ cython_debug/
 
 poetry.lock
 
-instance/
 
 compiled_instance.json
