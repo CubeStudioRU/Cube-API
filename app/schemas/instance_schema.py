@@ -4,7 +4,7 @@ from typing import List
 from pydantic import BaseModel, ConfigDict
 
 from app.schemas.cache_schema import Cached
-from app.schemas.content_schema import CompiledContent
+from app.schemas.content_schema import CompiledContentContainer
 
 
 class InstanceType(str, Enum):
@@ -28,7 +28,7 @@ class Instance(BaseInstance):
 
 class CompiledInstance(BaseInstance):
     instance_type: InstanceType
-    mods: List[CompiledContent]
+    containers: List[CompiledContentContainer]
 
 
 class CachedInstance(CompiledInstance, Cached):

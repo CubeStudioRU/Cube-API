@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 from pydantic import BaseModel, ConfigDict
 
@@ -53,3 +54,8 @@ class CachedContent(CompiledContent, Cached):
 class IntegrationContent(BaseContent):
     project: str
     version: str
+
+
+class CompiledContentContainer(BaseModel):
+    content_type: ContentType
+    content: List[CompiledContent]
