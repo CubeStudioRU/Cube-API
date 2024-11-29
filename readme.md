@@ -87,7 +87,7 @@
 
 ## Переменные среды
 
-```
+```shell
 CURSEFORGE_API_KEY= # Ключ CurseForge Studios
 BACKEND_PORT=8000 # Порт API
 
@@ -100,25 +100,25 @@ MONGO_PORT=4000 # Порт MongoDB
 
 Клонирование репозитория Cube-API
 
-```
+```shell
 git clone https://github.com/fadegor05/Cube-API.git
 ```
 
 Перемещение в директорию репозитория
 
-```
+```shell
 cd Cube-API
 ```
 
 Сборка, запуск контейнера в фоновом режиме
 
-```
+```shell
 docker-compose up --build -d
 ```
 
 Остановка контейнера
 
-```
+```shell
 docker container stop cube-api
 ```
 
