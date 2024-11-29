@@ -38,18 +38,12 @@
 
 ```json
 {
-  "uuid": "0",
-  // Индификатор проекта
-  "name": "CubeShield Experiment: Example",
-  // Название сборки
-  "version": "0.0.1",
-  // Версия сборки
-  "changelog": "",
-  // Изменения версии
-  "game_version": "1.20.4",
-  // Версия Minecraft
-  "loader": "fabric"
-  // Загрузчик Minecraft
+  "uuid": "0", // Идентификатор проекта
+  "name": "CubeShield Experiment: Example", // Название сборки
+  "version": "0.0.1", // Версия сборки
+  "changelog": "", // Изменения версии
+  "game_version": "1.20.4", // Версия Minecraft
+  "loader": "fabric" // Загрузчик Minecraft
 }
 ```
 
