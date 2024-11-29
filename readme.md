@@ -19,6 +19,7 @@
 * [X] Первый запуск Cube-API
 * [X] Поддержка CurseForge
 * [X] Dockerfile, docker-compose, контейнеризация Cube-API
+* [ ] Дополнительный контент (Ресурспаки, Шейдеры, Конфиги) **(WIP)**
 * [ ] Поддержка сторонних сервисов (например, Yandex.Drive, Google.Drive, Dropbox и т.д.)
 * [ ] Добавление скачивания некоторых файлов напрямую с Cube-API, например конфигов
 * [ ] Возможность наличия нескольких обновляемых Instances
@@ -35,42 +36,59 @@
 
 **Коллекция** `instances`:
 
-```
+```json
 {
-  "uuid": "0", // Индификатор проекта
-  "name": "CubeShield Experiment: Example", // Название сборки
-  "version": "0.0.1", // Версия сборки
-  "changelog": "", // Изменения версии
-  "game_version": "1.20.4", // Версия Minecraft
-  "loader": "fabric", // Загрузчик Minecraft
-  "modrinth": [ // Моды с сайта Modrinth
-    {
-      "mod": "simple-voice-chat", // Slug или ID мода
-      "version": "fabric-1.20.4-2.5.1", // Slug или ID версии мода (все можно найти в строке поиска, при открытом моде)
-      "side": "client" // Только для сервера (server), только для клиента (client), везде (both)
-    },
-    {
-      "mod": "...",
-      "version": "...",
-      "side": "..."
-    },
-  ],
-  "curseforge": [ // Моды с сайта CurseForge
-    {
-      "mod": "structurize" // Не обязательно (для более простого определения мода при составлении instance.json)
-      "mod_id": 298744, // ID мода
-      "file_id": 5082629 // ID версии мода (все можно найти в строке поиска, при открытом моде)
-      "side": "both" // Только для сервера (server), только для клиента (client), везде (both)
-    },
-    {
-      "mod": "...",
-      "mod_id": ...,
-      "file_id": ...,
-      "side": ...
-    },
-  ]
+  "uuid": "0",
+  // Индификатор проекта
+  "name": "CubeShield Experiment: Example",
+  // Название сборки
+  "version": "0.0.1",
+  // Версия сборки
+  "changelog": "",
+  // Изменения версии
+  "game_version": "1.20.4",
+  // Версия Minecraft
+  "loader": "fabric"
+  // Загрузчик Minecraft
 }
+```
 
+**Коллекция** `mods`:
+
+```json
+{
+    // Modrinth Мод
+    "integration": "modrinth",
+    "project": "simple-voice-chat", // Slug или ID мода
+    "version": "fabric-1.20.4-2.5.1", // Slug или ID версии мода
+    "side": "both"
+},
+{
+    // CurseForge Мод
+    "integration": "curseforge",
+    "project": "298744", // ID проекта
+    "version": "5082629", // ID файла мода
+    "side": "both"
+}
+```
+
+**Коллекция** `resourcepacks`:
+
+```json
+{
+    // Modrinth Ресурспак
+    "integration": "modrinth",
+    "project": "simple-voice-chat", // Slug или ID ресурспака
+    "version": "fabric-1.20.4-2.5.1", // Slug или ID версии ресурспака
+    "side": "both"
+},
+{
+    // CurseForge Ресурспак
+    "integration": "curseforge",
+    "project": "298744", // ID проекта
+    "version": "5082629", // ID файла ресурспака
+    "side": "both"
+}
 ```
 
 ## Переменные среды
