@@ -1,5 +1,6 @@
 from fastapi.params import Depends
 
+from app.integrations.cdn_integration import CdnIntegration, get_cdn_integration
 from app.integrations.curseforge_integration import get_curseforge_integration, CurseforgeIntegration
 from app.integrations.modrinth_integration import get_modrinth_integration, ModrinthIntegration
 from app.repositories.mod.mod_content_repository import ModContentRepository
@@ -14,9 +15,11 @@ class ModContentService(ContentService):
 async def get_mod_content_service(repository: ModContentRepository = Depends(MongoModContentRepository),
                                   modrinth_integration: ModrinthIntegration = Depends(get_modrinth_integration),
                                   curseforge_integration: CurseforgeIntegration = Depends(
-                                      get_curseforge_integration)) -> ModContentService:
+                                      get_curseforge_integration),
+                                  cdn_integration: CdnIntegration = Depends(get_cdn_integration)) -> ModContentService:
     integrations = [
         modrinth_integration,
-        curseforge_integration
+        curseforge_integration,
+        cdn_integration
     ]
     return ModContentService(repository, integrations)
