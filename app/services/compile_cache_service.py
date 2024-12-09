@@ -1,8 +1,10 @@
 from fastapi.params import Depends
 
 from app.repositories.instance.instance_cache_repository import InstanceCacheRepository
-from app.repositories.repositories_mongo.instance.mongo_instance_cache_repository import MongoInstanceCacheRepository
-from app.schemas.instance_schema import Instance, CachedInstance, InstanceType
+from app.repositories.repositories_mongo.instance.mongo_instance_cache_repository import (
+    MongoInstanceCacheRepository,
+)
+from app.schemas.instance_schema import CachedInstance, Instance, InstanceType
 from app.services.cache_service import CacheService
 
 
@@ -20,6 +22,7 @@ class CompileCacheService(CacheService[Instance, CachedInstance]):
         return await self.repository.get_instance(entity_hash, entity_type)
 
 
-async def get_compile_cache_service(instance_cache_repository: InstanceCacheRepository = Depends(
-    MongoInstanceCacheRepository)) -> CompileCacheService:
+async def get_compile_cache_service(
+    instance_cache_repository: InstanceCacheRepository = Depends(MongoInstanceCacheRepository),
+) -> CompileCacheService:
     return CompileCacheService(instance_cache_repository)

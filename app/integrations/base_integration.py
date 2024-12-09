@@ -1,12 +1,18 @@
 from abc import ABC, abstractmethod
-from typing import List
 
 from app.core.utils import hash_dict
-from app.schemas.content_schema import CompiledContent, TypedContent, ContentType, CachedContent
+from app.schemas.content_schema import (
+    CachedContent,
+    CompiledContent,
+    ContentType,
+    TypedContent,
+)
 from app.schemas.integration_schema import IntegrationType
 from app.services.cache_service import CacheService
 from app.services.mod.mod_content_cache_service import ModContentCacheService
-from app.services.resourcepack.resourcepack_content_cache_service import ResourcepackContentCacheService
+from app.services.resourcepack.resourcepack_content_cache_service import (
+    ResourcepackContentCacheService,
+)
 
 
 class BaseIntegration(ABC):
@@ -14,10 +20,10 @@ class BaseIntegration(ABC):
     integration_type: IntegrationType
     service_map = {
         ContentType.mods.name: ModContentCacheService,
-        ContentType.resourcepacks.name: ResourcepackContentCacheService
+        ContentType.resourcepacks.name: ResourcepackContentCacheService,
     }
 
-    def __init__(self, cache_services: List[CacheService], integration_type: IntegrationType):
+    def __init__(self, cache_services: list[CacheService], integration_type: IntegrationType):
         self.cache_services = cache_services
         self.integration_type = integration_type
 
@@ -26,6 +32,7 @@ class BaseIntegration(ABC):
         for cache_service in self.cache_services:
             if isinstance(cache_service, content_cache_service_class):
                 return cache_service
+        return None
 
     @abstractmethod
     async def get_content(self, content: TypedContent) -> CompiledContent:
@@ -44,7 +51,7 @@ class BaseIntegration(ABC):
             return compiled_content
         print(f"{content.model_dump()} Failed")
 
-    async def get_contents(self, contents: List[TypedContent]) -> List[CompiledContent]:
+    async def get_contents(self, contents: list[TypedContent]) -> list[CompiledContent]:
         compiled_contents = []
 
         for content in contents:
@@ -54,7 +61,11 @@ class BaseIntegration(ABC):
 
         return compiled_contents
 
-    async def cache_content(self, content: TypedContent, compiled_content: CompiledContent,
-                            cache_service: CacheService):
+    async def cache_content(
+        self,
+        content: TypedContent,
+        compiled_content: CompiledContent,
+        cache_service: CacheService,
+    ):
         cached_content = CachedContent(**compiled_content.model_dump(), hash=hash_dict(content.model_dump()))
         await cache_service.add_cache(cached_content)

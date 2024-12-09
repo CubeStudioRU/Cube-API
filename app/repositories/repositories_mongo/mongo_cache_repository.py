@@ -1,5 +1,7 @@
 from app.repositories.cache_repository import CacheRepository
-from app.repositories.repositories_mongo.mongo_base_repository import MongoBaseRepository
+from app.repositories.repositories_mongo.mongo_base_repository import (
+    MongoBaseRepository,
+)
 from app.schemas.cache_schema import Cached
 
 

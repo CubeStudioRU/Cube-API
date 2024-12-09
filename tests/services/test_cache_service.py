@@ -38,7 +38,10 @@ async def test_get_valid_cached_instance(instance_fixture, compiled_instance_fix
     cache_service = AsyncMock()
     cache_service.get.return_value = cached_instance.model_dump()
 
-    with patch("app.services.cache_service.hash_dict", return_value=cached_instance.instance_hash):
+    with patch(
+        "app.services.cache_service.hash_dict",
+        return_value=cached_instance.instance_hash,
+    ):
         compile_cache = await compile_cache_service_factory(cache_service)
         result = await compile_cache.get_valid_cached_instance(instance)
 

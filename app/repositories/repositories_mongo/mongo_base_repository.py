@@ -1,4 +1,4 @@
-from typing import List, Optional, TypeVar, Generic
+from typing import Generic, TypeVar
 
 from fastapi import Depends
 from pydantic import BaseModel
@@ -15,11 +15,11 @@ class MongoBaseRepository(BaseRepository, Generic[Entity]):
     def __init__(self, storage: AsyncMongoStorage = Depends(get_async_mongo_storage)):
         self.storage = storage
 
-    async def get_all(self) -> List[Entity]:
+    async def get_all(self) -> list[Entity]:
         documents = await self.storage.find_all(self.repository_name)
         return [self.entity_model.model_validate(doc) for doc in documents]
 
-    async def get(self, entity_uuid: str) -> Optional[Entity]:
+    async def get(self, entity_uuid: str) -> Entity | None:
         document = await self.storage.find_one(self.repository_name, {"uuid": entity_uuid})
         return self.entity_model.model_validate(document) if document else None
 

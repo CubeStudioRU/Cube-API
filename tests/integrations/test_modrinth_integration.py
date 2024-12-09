@@ -10,7 +10,11 @@ async def test_get_mod_success(modrinth_integration):
     url = f"{modrinth_integration.BASE_URL}/project/{mod.mod}/version/{mod.version}"
     mocked_data = {
         "files": [
-            {"primary": True, "filename": "modfile.jar", "url": "http://example.com/modfile.jar"}
+            {
+                "primary": True,
+                "filename": "modfile.jar",
+                "url": "http://example.com/modfile.jar",
+            }
         ]
     }
 
@@ -30,7 +34,11 @@ async def test_get_mod_no_primary_file(modrinth_integration):
     url = f"{modrinth_integration.BASE_URL}/project/{mod.mod}/version/{mod.version}"
     mocked_data = {
         "files": [
-            {"primary": False, "filename": "otherfile.jar", "url": "http://example.com/otherfile.jar"}
+            {
+                "primary": False,
+                "filename": "otherfile.jar",
+                "url": "http://example.com/otherfile.jar",
+            }
         ]
     }
 
@@ -67,8 +75,10 @@ async def test_extract_mods(modrinth_integration, instance_fixture):
 @pytest.mark.integration
 async def test_integration_get_mod_success(modrinth_integration):
     mod = ModrinthMod(mod="sodium", version="mc1.20.4-0.5.8")
-    compiled_mod = CompiledInstanceMod(file="sodium-fabric-0.5.8+mc1.20.4.jar",
-                                       url="https://cdn.modrinth.com/data/AANobbMI/versions/4GyXKCLd/sodium-fabric-0.5.8%2Bmc1.20.4.jar")
+    compiled_mod = CompiledInstanceMod(
+        file="sodium-fabric-0.5.8+mc1.20.4.jar",
+        url="https://cdn.modrinth.com/data/AANobbMI/versions/4GyXKCLd/sodium-fabric-0.5.8%2Bmc1.20.4.jar",
+    )
 
     result = await modrinth_integration.get_mod(mod)
 

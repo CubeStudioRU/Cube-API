@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import List
 
 from pydantic import BaseModel, ConfigDict
 
@@ -14,7 +13,7 @@ class InstanceType(str, Enum):
 
 
 class BaseInstance(BaseModel):
-    model_config = ConfigDict(extra='ignore')
+    model_config = ConfigDict(extra="ignore")
     uuid: str
     name: str
     version: str
@@ -28,7 +27,7 @@ class Instance(BaseInstance):
 
 class CompiledInstance(BaseInstance):
     instance_type: InstanceType
-    containers: List[CompiledContentContainer]
+    containers: list[CompiledContentContainer]
 
 
 class CachedInstance(CompiledInstance, Cached):

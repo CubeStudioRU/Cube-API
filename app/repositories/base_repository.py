@@ -1,18 +1,18 @@
-from abc import abstractmethod, ABC
-from typing import List, Optional, TypeVar, Generic
+from abc import ABC, abstractmethod
+from typing import Generic, TypeVar
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class BaseRepository(ABC, Generic[T]):
     repository_name: str
 
     @abstractmethod
-    async def get_all(self) -> List[T]:
+    async def get_all(self) -> list[T]:
         pass
 
     @abstractmethod
-    async def get(self, entity_id: str) -> Optional[T]:
+    async def get(self, entity_id: str) -> T | None:
         pass
 
     @abstractmethod
