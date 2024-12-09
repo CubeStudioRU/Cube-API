@@ -2,9 +2,7 @@ from fastapi import APIRouter
 
 from .instances.instances import instances_router
 
-subrouters = (
-    instances_router,
-)
+subrouters = (instances_router,)
 
 v1_router = APIRouter(prefix="/v1")
 

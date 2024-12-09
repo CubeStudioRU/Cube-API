@@ -1,5 +1,4 @@
 from abc import ABC
-from typing import List
 
 from app.core.utils import hash_dict
 from app.integrations.base_integration import BaseIntegration
@@ -9,17 +8,18 @@ from app.schemas.instance_schema import InstanceType
 
 
 class ContentService(ABC):
-    def __init__(self, repository: ContentRepository, integrations: List[BaseIntegration]):
+    def __init__(self, repository: ContentRepository, integrations: list[BaseIntegration]):
         self.repository = repository
         self.integrations = integrations
 
-    async def get_compiled_contents(self, instance_type: InstanceType) -> List[CompiledContent]:
+    async def get_compiled_contents(self, instance_type: InstanceType) -> list[CompiledContent]:
         content_sides = ContentSide.from_instance_type(instance_type)
-        compiled_contents: List[CompiledContent] = []
+        compiled_contents: list[CompiledContent] = []
 
         for integration in self.integrations:
-            contents = await self.repository.get_typed_by_integration_and_sides(integration.integration_type,
-                                                                                content_sides)
+            contents = await self.repository.get_typed_by_integration_and_sides(
+                integration.integration_type, content_sides
+            )
             compiled_contents.extend(await integration.get_contents(contents))
 
         return compiled_contents

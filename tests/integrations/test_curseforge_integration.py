@@ -10,7 +10,10 @@ async def test_get_mod_success(curseforge_integration):
     mod = CurseforgeMod(mod="some_mod", mod_id=56354, file_id=12312)
     url = curseforge_integration.BASE_URL + f"/mods/{mod.mod_id}/files/{mod.file_id}"
     mocked_data = {
-        "data": {"fileName": "modfile.jar", "downloadUrl": "http://example.com/modfile.jar"}
+        "data": {
+            "fileName": "modfile.jar",
+            "downloadUrl": "http://example.com/modfile.jar",
+        }
     }
 
     with aioresponses() as mocked:
@@ -27,9 +30,7 @@ async def test_get_mod_success(curseforge_integration):
 async def test_get_mod_no_data(curseforge_integration):
     mod = CurseforgeMod(mod="some_mod", mod_id=56354, file_id=12312)
     url = curseforge_integration.BASE_URL + f"/mods/{mod.mod_id}/files/{mod.file_id}"
-    mocked_data = {
-        "data": {}
-    }
+    mocked_data = {"data": {}}
 
     with aioresponses() as mocked:
         mocked.get(url, payload=mocked_data, status=200)

@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import List
 
 from pydantic import BaseModel, ConfigDict
 
@@ -30,7 +29,7 @@ class ContentSide(str, Enum):
 
 
 class Content(BaseModel):
-    model_config = ConfigDict(extra='ignore')
+    model_config = ConfigDict(extra="ignore")
 
 
 class BaseContent(Content):
@@ -58,4 +57,4 @@ class IntegrationContent(BaseContent):
 
 class CompiledContentContainer(BaseModel):
     content_type: ContentType
-    content: List[CompiledContent]
+    content: list[CompiledContent]
